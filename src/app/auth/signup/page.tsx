@@ -204,15 +204,15 @@ const SignupPageContent = () => {
   };
 
   return (
-    <main className="relative flex h-[calc(100dvh-72px)] min-h-0 items-center overflow-hidden bg-[#FBEFEF] px-3 py-3 transition-colors duration-300 dark:bg-[#211B27] sm:px-5 lg:px-8">
+    <main className="relative flex h-dvh min-h-dvh items-center overflow-hidden bg-[#FBEFEF] px-3 py-3 transition-colors duration-300 dark:bg-[#211B27] sm:px-5 lg:px-8">
       <ToastContainer />
 
       {/* Soft background glow */}
       <div className="pointer-events-none absolute -left-28 -top-24 size-96 rounded-full bg-[#C5B3D3]/50 blur-3xl dark:bg-[#C5B3D3]/12" />
 
-      <div className="pointer-events-none absolute -bottom-32 -right-24 size-[430px] rounded-full bg-[#F5CBCB]/55 blur-3xl dark:bg-[#F5CBCB]/10" />
+      <div className="pointer-events-none absolute -bottom-32 -right-24 size-107.5 rounded-full bg-[#F5CBCB]/55 blur-3xl dark:bg-[#F5CBCB]/10" />
 
-      <div className="signup-shell relative mx-auto grid h-full max-h-[760px] w-full max-w-6xl overflow-hidden rounded-[30px] border border-[#F5CBCB] bg-white/90 shadow-[0_32px_95px_-48px_rgba(112,86,126,0.42)] backdrop-blur-2xl dark:border-[#51415D] dark:bg-[#2A2233]/95 lg:grid-cols-[0.88fr_1.12fr]">
+      <div className="signup-shell relative mx-auto grid h-full max-h-190 w-full max-w-6xl overflow-hidden rounded-[30px] border border-[#F5CBCB] bg-white/90 shadow-[0_32px_95px_-48px_rgba(112,86,126,0.42)] backdrop-blur-2xl dark:border-[#51415D] dark:bg-[#2A2233]/95 lg:grid-cols-[0.88fr_1.12fr]">
         {/* Left information panel */}
         <section className="relative hidden overflow-hidden bg-linear-to-br from-[#C5B3D3] via-[#F5CBCB] to-[#FFE2E2] p-7 text-slate-900 lg:flex lg:flex-col lg:justify-between xl:p-9">
           <div className="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-[#FBEFEF]/70 blur-3xl" />
@@ -559,7 +559,7 @@ const SignupPageContent = () => {
 
 const SignupPageFallback = () => {
   return (
-    <main className="flex h-[calc(100dvh-72px)] items-center justify-center overflow-hidden bg-[#FBEFEF] dark:bg-[#211B27]">
+    <main className="flex h-dvh min-h-dvh items-center justify-center overflow-hidden bg-[#FBEFEF] dark:bg-[#211B27]">
       <div className="flex items-center gap-3 text-sm font-bold text-[#745D83] dark:text-[#F5CBCB]">
         <FiLoader className="animate-spin text-xl" />
         Loading registration page...

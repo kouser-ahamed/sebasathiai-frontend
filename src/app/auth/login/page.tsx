@@ -166,13 +166,13 @@ const LoginPageContent = () => {
   };
 
   return (
-    <main className="relative min-h-[calc(100vh-72px)] overflow-hidden bg-[#FBEFEF] px-4 py-10 dark:bg-[#211B27] sm:px-6 sm:py-14 lg:px-8">
+    <main className="relative flex h-dvh min-h-dvh items-center overflow-hidden bg-[#FBEFEF] px-3 py-3 dark:bg-[#211B27] sm:px-5 lg:px-8">
       <ToastContainer />
 
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_12%,rgba(197,179,211,0.55),transparent_32%),radial-gradient(circle_at_92%_18%,rgba(255,226,226,0.8),transparent_30%),radial-gradient(circle_at_82%_88%,rgba(245,203,203,0.6),transparent_32%)] dark:bg-[radial-gradient(circle_at_8%_12%,rgba(197,179,211,0.16),transparent_32%),radial-gradient(circle_at_92%_18%,rgba(255,226,226,0.08),transparent_30%),radial-gradient(circle_at_82%_88%,rgba(245,203,203,0.1),transparent_32%)]" />
 
-      <div className="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-[32px] border border-[#F5CBCB] bg-white/95 shadow-[0_38px_110px_-48px_rgba(112,86,126,0.42)] backdrop-blur-xl dark:border-[#51415D] dark:bg-[#2A2233]/95 lg:grid-cols-[0.92fr_1.08fr]">
+      <div className="relative mx-auto grid h-full max-h-190 w-full max-w-6xl overflow-hidden rounded-[32px] border border-[#F5CBCB] bg-white/95 shadow-[0_38px_110px_-48px_rgba(112,86,126,0.42)] backdrop-blur-xl dark:border-[#51415D] dark:bg-[#2A2233]/95 lg:grid-cols-[0.92fr_1.08fr]">
         {/* Left information panel */}
         <section className="relative hidden overflow-hidden bg-linear-to-br from-[#C5B3D3] via-[#F5CBCB] to-[#FFE2E2] p-10 text-slate-900 lg:flex lg:flex-col lg:justify-between">
           <div className="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-[#FBEFEF]/70 blur-3xl" />
@@ -258,7 +258,7 @@ const LoginPageContent = () => {
         </section>
 
         {/* Login form */}
-        <section className="flex items-center justify-center p-5 sm:p-8 lg:p-12">
+        <section className="flex h-full items-center justify-center p-4 sm:p-6 lg:p-8">
           <Card className="w-full max-w-lg border-0 bg-transparent p-0 shadow-none">
             <div className="text-center">
               <Link
@@ -445,7 +445,7 @@ const LoginPageContent = () => {
 
 const LoginPageFallback = () => {
   return (
-    <main className="flex min-h-[calc(100vh-72px)] items-center justify-center bg-[#FBEFEF] dark:bg-[#211B27]">
+    <main className="flex h-dvh min-h-dvh items-center justify-center bg-[#FBEFEF] dark:bg-[#211B27]">
       <div className="flex items-center gap-3 text-sm font-bold text-[#745D83] dark:text-[#F5CBCB]">
         <FiLoader className="animate-spin text-xl" />
         Loading login page...
