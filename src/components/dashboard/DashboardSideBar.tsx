@@ -96,14 +96,14 @@ const dashboardItems: Record<
       icon: Comment,
     },
     {
-      label: "Favorite Doctors",
-      href: "/dashboard/patient/favorite-doctors",
-      icon: Star,
-    },
-    {
       label: "AI Health History",
       href: "/dashboard/patient/ai-health-history",
       icon: BookOpen,
+    },
+    {
+      label: "My Profile",
+      href: "/dashboard/patient/my-profile",
+      icon: GearDot,
     },
   ],
 
@@ -120,7 +120,7 @@ const dashboardItems: Record<
     },
     {
       label: "Appointments",
-      href: "/dashboard/doctor/appointments",
+      href: "/dashboard/doctor/patients-appointments",
       icon: Calendar,
     },
     {
@@ -144,8 +144,8 @@ const dashboardItems: Record<
       icon: Calendar,
     },
     {
-      label: "Doctor Profile",
-      href: "/dashboard/doctor/profile",
+      label: "My Profile",
+      href: "/dashboard/doctor/my-profile",
       icon: GearDot,
     },
   ],
@@ -171,24 +171,15 @@ const dashboardItems: Record<
       href: "/dashboard/admin/doctors",
       icon: PersonWorker,
     },
-    {
-      label: "Doctor Applications",
-      href: "/dashboard/admin/doctor-applications",
-      icon: PersonPlus,
-    },
+   
     {
       label: "Manage Appointments",
       href: "/dashboard/admin/appointments",
       icon: Calendar,
-    },
+    },  
     {
-      label: "Reports",
-      href: "/dashboard/admin/reports",
-      icon: BookOpen,
-    },
-    {
-      label: "Settings",
-      href: "/dashboard/admin/settings",
+      label: "My Profile",
+      href: "/dashboard/admin/my-profile",
       icon: GearDot,
     },
   ],
