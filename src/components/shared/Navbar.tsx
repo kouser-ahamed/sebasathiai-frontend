@@ -41,7 +41,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({
 
   return (
     <span
-      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 ring-1 ring-slate-200/80 shadow-sm dark:bg-black dark:ring-neutral-800 ${sizeClassName}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 shadow-sm ring-1 ring-[#C5B3D3]/70 dark:bg-[#211B27] dark:ring-[#5D4C69] ${sizeClassName}`}
     >
       {imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -52,7 +52,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({
           className="h-full w-full rounded-full object-cover"
         />
       ) : (
-        <span className="flex h-full w-full items-center justify-center rounded-full bg-green-50 text-xs font-bold text-green-700 dark:bg-neutral-900 dark:text-green-400">
+        <span className="flex h-full w-full items-center justify-center rounded-full bg-[#FBEFEF] text-xs font-bold text-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]">
           {initial}
         </span>
       )}
@@ -247,33 +247,36 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm transition-colors duration-300 dark:border-neutral-900 dark:bg-black">
+    <header className="sticky top-0 z-50 border-b border-[#F5CBCB] bg-white shadow-sm transition-colors duration-300 dark:border-[#41354A] dark:bg-[#211B27]">
       <nav className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-4">
         {/* Logo */}
         <Link href="/" className="group flex shrink-0 items-center gap-2.5">
           <div className="relative">
             <Image
               src="/assets/logo11.png"
-              alt="SebaSathiAI logo"
+              alt="SebaSathi AI logo"
               width={42}
               height={42}
               priority
               className="rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
 
-            <div className="absolute inset-0 rounded-full ring-2 ring-green-500/20 transition-all duration-300 group-hover:ring-green-500/40 dark:ring-green-400/20 dark:group-hover:ring-green-400/40" />
+            <div className="absolute inset-0 rounded-full ring-2 ring-[#C5B3D3]/50 transition-all duration-300 group-hover:ring-[#745D83]/70 dark:ring-[#F5CBCB]/30 dark:group-hover:ring-[#F5CBCB]/60" />
           </div>
 
-          <h1 className="text-xl font-black tracking-tight text-slate-800 dark:text-white sm:text-2xl">
-            Seba
-            <span className="text-green-600 transition-colors duration-300 group-hover:text-green-700 dark:text-green-400 dark:group-hover:text-green-300">
-              SathiAI
+          <h1 className="text-xl font-black tracking-tight sm:text-2xl">
+            <span className="text-slate-800 transition-colors duration-300 dark:text-white">
+              Seba
+            </span>
+
+            <span className="text-[#745D83] transition-colors duration-300 group-hover:text-[#614E70] dark:text-[#F5CBCB] dark:group-hover:text-[#FFE2E2]">
+              Sathi AI
             </span>
           </h1>
         </Link>
 
         {/* Desktop navigation */}
-        <ul className="hidden items-center gap-7 text-sm font-semibold text-slate-600 dark:text-neutral-200 lg:flex">
+        <ul className="hidden items-center gap-7 text-sm font-semibold text-slate-600 dark:text-[#E7DDE8] lg:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <NavLink href={link.href}>{link.title}</NavLink>
@@ -287,26 +290,26 @@ const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="hidden cursor-pointer items-center justify-center rounded-lg p-2 transition-all duration-200 hover:bg-slate-100 dark:hover:bg-neutral-900 lg:flex"
+            className="hidden cursor-pointer items-center justify-center rounded-lg p-2 transition-all duration-200 hover:bg-[#FBEFEF] dark:hover:bg-[#352B3D] lg:flex"
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDark ? (
-              <LuSun className="text-xl text-amber-400" />
+              <LuSun className="text-xl text-[#F5CBCB]" />
             ) : (
-              <LuMoon className="text-xl text-slate-600" />
+              <LuMoon className="text-xl text-[#745D83]" />
             )}
           </button>
 
           {/* Desktop authentication */}
           <div className="hidden items-center lg:flex">
             {sessionPending ? (
-              <div className="flex h-10 w-24 items-center justify-center rounded-full bg-slate-100 dark:bg-neutral-900">
-                <LuLoaderCircle className="animate-spin text-green-600 dark:text-green-400" />
+              <div className="flex h-10 w-24 items-center justify-center rounded-full bg-[#FBEFEF] dark:bg-[#352B3D]">
+                <LuLoaderCircle className="animate-spin text-[#745D83] dark:text-[#F5CBCB]" />
               </div>
             ) : !user ? (
               <Link
                 href={loginHref}
-                className="inline-flex h-10 items-center justify-center rounded-full bg-green-600 px-6 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:scale-[1.02] hover:bg-green-700 hover:shadow-md dark:bg-green-500 dark:text-black dark:hover:bg-green-400"
+                className="inline-flex h-10 items-center justify-center rounded-full bg-[#745D83] px-6 text-sm font-bold text-white shadow-sm shadow-[#C5B3D3]/40 transition-all duration-300 hover:scale-[1.02] hover:bg-[#614E70] hover:shadow-md dark:bg-[#C5B3D3] dark:text-[#211B27] dark:hover:bg-[#F5CBCB]"
               >
                 Login
               </Link>
@@ -317,8 +320,8 @@ const Navbar: React.FC = () => {
                   onClick={() => setProfileMenuOpen((previous) => !previous)}
                   className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 shadow-sm transition-all duration-300 ${
                     profileMenuOpen
-                      ? "border-green-500 bg-green-50/60 dark:border-green-400 dark:bg-neutral-900"
-                      : "border-slate-200 bg-white hover:border-green-500 hover:bg-green-50/30 dark:border-neutral-900 dark:bg-black dark:hover:border-green-400 dark:hover:bg-neutral-900"
+                      ? "border-[#745D83] bg-[#FBEFEF] dark:border-[#C5B3D3] dark:bg-[#352B3D]"
+                      : "border-[#F5CBCB] bg-white hover:border-[#C5B3D3] hover:bg-[#FBEFEF] dark:border-[#41354A] dark:bg-[#211B27] dark:hover:border-[#C5B3D3] dark:hover:bg-[#352B3D]"
                   }`}
                   aria-expanded={profileMenuOpen}
                   aria-label="Open user menu"
@@ -329,15 +332,15 @@ const Navbar: React.FC = () => {
                     sizeClassName="size-8"
                   />
 
-                  <span className="max-w-24 truncate text-sm font-semibold text-slate-700 dark:text-neutral-200">
+                  <span className="max-w-24 truncate text-sm font-semibold text-slate-700 dark:text-[#E7DDE8]">
                     {user.name?.split(" ")[0] || "User"}
                   </span>
 
                   <LuChevronDown
                     size={16}
-                    className={`text-slate-400 transition-transform duration-300 dark:text-neutral-500 ${
+                    className={`text-slate-400 transition-transform duration-300 dark:text-[#A997AE] ${
                       profileMenuOpen
-                        ? "rotate-180 text-green-600 dark:text-green-400"
+                        ? "rotate-180 text-[#745D83] dark:text-[#F5CBCB]"
                         : ""
                     }`}
                   />
@@ -345,13 +348,13 @@ const Navbar: React.FC = () => {
 
                 {/* Desktop profile dropdown */}
                 <div
-                  className={`absolute right-0 top-[120%] w-72 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl transition-all duration-300 dark:border-neutral-900 dark:bg-black ${
+                  className={`absolute right-0 top-[120%] w-72 rounded-2xl border border-[#F5CBCB] bg-white p-1.5 shadow-xl transition-all duration-300 dark:border-[#41354A] dark:bg-[#211B27] ${
                     profileMenuOpen
                       ? "visible translate-y-0 scale-100 opacity-100"
                       : "invisible -translate-y-2 scale-95 opacity-0"
                   }`}
                 >
-                  <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-green-50/40 p-3 dark:border-neutral-900 dark:bg-neutral-950">
+                  <div className="flex items-center gap-3 rounded-xl border border-[#F5CBCB] bg-[#FBEFEF] p-3 dark:border-[#41354A] dark:bg-[#2A2233]">
                     <div className="relative">
                       <ProfileAvatar
                         src={user.image}
@@ -359,7 +362,7 @@ const Navbar: React.FC = () => {
                         sizeClassName="size-11"
                       />
 
-                      <div className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-white bg-green-500 dark:border-black dark:bg-green-400" />
+                      <div className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-white bg-[#745D83] dark:border-[#211B27] dark:bg-[#F5CBCB]" />
                     </div>
 
                     <div className="min-w-0 flex-1">
@@ -367,13 +370,13 @@ const Navbar: React.FC = () => {
                         {user.name}
                       </h2>
 
-                      <p className="truncate text-xs text-slate-500 dark:text-neutral-400">
+                      <p className="truncate text-xs text-slate-500 dark:text-[#A997AE]">
                         {user.email}
                       </p>
                     </div>
                   </div>
 
-                  <div className="my-1.5 h-px bg-slate-200 dark:bg-neutral-900" />
+                  <div className="my-1.5 h-px bg-[#F5CBCB] dark:bg-[#41354A]" />
 
                   <div className="flex flex-col gap-0.5">
                     <Link
@@ -381,15 +384,15 @@ const Navbar: React.FC = () => {
                       onClick={closeMenus}
                       className={`group flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                         isActiveLink("/dashboard")
-                          ? "bg-green-50 text-green-700 dark:bg-neutral-900 dark:text-green-400"
-                          : "text-slate-700 hover:bg-green-50 hover:text-green-700 dark:text-neutral-300 dark:hover:bg-neutral-900/70 dark:hover:text-white"
+                          ? "bg-[#FBEFEF] text-[#614E70] dark:bg-[#352B3D] dark:text-[#F5CBCB]"
+                          : "text-slate-700 hover:bg-[#FBEFEF] hover:text-[#745D83] dark:text-[#E7DDE8] dark:hover:bg-[#352B3D] dark:hover:text-[#FFE2E2]"
                       }`}
                     >
                       <span
                         className={`flex size-8 items-center justify-center rounded-lg transition-all ${
                           isActiveLink("/dashboard")
-                            ? "bg-green-100 text-green-700 dark:bg-neutral-800 dark:text-green-400"
-                            : "bg-slate-100 text-slate-500 group-hover:bg-green-100 group-hover:text-green-700 dark:bg-neutral-900 dark:text-neutral-400 dark:group-hover:bg-neutral-800 dark:group-hover:text-white"
+                            ? "bg-[#FFE2E2] text-[#614E70] dark:bg-[#41354A] dark:text-[#F5CBCB]"
+                            : "bg-slate-100 text-slate-500 group-hover:bg-[#FFE2E2] group-hover:text-[#745D83] dark:bg-[#2A2233] dark:text-[#A997AE] dark:group-hover:bg-[#41354A] dark:group-hover:text-[#FFE2E2]"
                         }`}
                       >
                         <LuLayoutDashboard size={16} />
@@ -397,7 +400,7 @@ const Navbar: React.FC = () => {
                       Dashboard
                     </Link>
 
-                    <div className="my-1 h-px bg-slate-200 dark:bg-neutral-900" />
+                    <div className="my-1 h-px bg-[#F5CBCB] dark:bg-[#41354A]" />
 
                     <button
                       type="button"
@@ -405,7 +408,7 @@ const Navbar: React.FC = () => {
                       disabled={isLoggingOut}
                       className="group flex cursor-pointer items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-red-600 transition-all duration-200 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 dark:text-red-400 dark:hover:bg-red-950/30"
                     >
-                      <span className="flex size-8 items-center justify-center rounded-lg bg-red-50 transition-all group-hover:bg-red-100 dark:bg-neutral-900 dark:group-hover:bg-neutral-800">
+                      <span className="flex size-8 items-center justify-center rounded-lg bg-red-50 transition-all group-hover:bg-red-100 dark:bg-[#2A2233] dark:group-hover:bg-red-950/40">
                         {isLoggingOut ? (
                           <LuLoaderCircle size={16} className="animate-spin" />
                         ) : (
@@ -425,18 +428,18 @@ const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setMenuOpen((previous) => !previous)}
-            className="flex cursor-pointer items-center justify-center rounded-lg p-2 transition-all duration-200 hover:bg-slate-100 dark:hover:bg-neutral-900 lg:hidden"
+            className="flex cursor-pointer items-center justify-center rounded-lg p-2 transition-all duration-200 hover:bg-[#FBEFEF] dark:hover:bg-[#352B3D] lg:hidden"
             aria-label={
               menuOpen ? "Close navigation menu" : "Open navigation menu"
             }
             aria-expanded={menuOpen}
           >
             {menuOpen ? (
-              <LuX size={26} className="text-green-600 dark:text-green-400" />
+              <LuX size={26} className="text-[#745D83] dark:text-[#F5CBCB]" />
             ) : (
               <LuMenu
                 size={26}
-                className="text-green-600 dark:text-green-400"
+                className="text-[#745D83] dark:text-[#F5CBCB]"
               />
             )}
           </button>
@@ -444,7 +447,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile menu */}
         <div
-          className={`fixed inset-x-4 top-[76px] z-[60] max-h-[calc(100dvh-92px)] w-auto max-w-sm overflow-y-auto overscroll-contain rounded-3xl border border-slate-200 bg-white/95 shadow-2xl backdrop-blur-xl transition-all duration-300 dark:border-neutral-900 dark:bg-black/95 sm:left-auto sm:right-6 sm:w-[calc(100vw-3rem)] lg:hidden ${
+          className={`fixed inset-x-4 top-[76px] z-[60] max-h-[calc(100dvh-92px)] w-auto max-w-sm overflow-y-auto overscroll-contain rounded-3xl border border-[#F5CBCB] bg-white/95 shadow-2xl shadow-[#C5B3D3]/20 backdrop-blur-xl transition-all duration-300 dark:border-[#41354A] dark:bg-[#211B27]/95 sm:left-auto sm:right-6 sm:w-[calc(100vw-3rem)] lg:hidden ${
             menuOpen
               ? "visible translate-y-0 scale-100 opacity-100"
               : "invisible -translate-y-3 scale-95 opacity-0"
@@ -452,7 +455,7 @@ const Navbar: React.FC = () => {
         >
           <div className="p-4 pb-6">
             {user && (
-              <div className="mb-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-green-50/40 p-3 dark:border-neutral-900 dark:bg-neutral-950">
+              <div className="mb-4 flex items-center gap-3 rounded-2xl border border-[#F5CBCB] bg-[#FBEFEF] p-3 dark:border-[#41354A] dark:bg-[#2A2233]">
                 <div className="relative">
                   <ProfileAvatar
                     src={user.image}
@@ -460,7 +463,7 @@ const Navbar: React.FC = () => {
                     sizeClassName="size-10"
                   />
 
-                  <div className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-white bg-green-500 dark:border-black dark:bg-green-400" />
+                  <div className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-white bg-[#745D83] dark:border-[#211B27] dark:bg-[#F5CBCB]" />
                 </div>
 
                 <div className="min-w-0 flex-1">
@@ -468,14 +471,15 @@ const Navbar: React.FC = () => {
                     {user.name}
                   </p>
 
-                  <p className="truncate text-xs text-slate-500 dark:text-neutral-400">
+                  <p className="truncate text-xs text-slate-500 dark:text-[#A997AE]">
                     {user.email}
                   </p>
                 </div>
               </div>
             )}
 
-            <div className="flex flex-col gap-1">
+            {/* Mobile navigation links */}
+            <div className="flex flex-col gap-1.5">
               {NAV_LINKS.map((link) => {
                 const active = isActiveLink(link.href);
 
@@ -484,10 +488,11 @@ const Navbar: React.FC = () => {
                     key={link.href}
                     href={link.href}
                     onClick={closeMenus}
-                    className={`w-full rounded-xl px-4 py-3 text-center text-sm font-semibold transition-all duration-200 ${
+                    aria-current={active ? "page" : undefined}
+                    className={`w-full rounded-xl border px-4 py-3 text-center text-sm font-semibold transition-all duration-200 ${
                       active
-                        ? "bg-green-50 text-green-700 shadow-sm dark:bg-neutral-900 dark:text-green-400"
-                        : "text-slate-700 hover:bg-green-50 hover:text-green-700 dark:text-neutral-200 dark:hover:bg-neutral-900/60 dark:hover:text-green-400"
+                        ? "border-[#C5B3D3] bg-[#FBEFEF] text-[#614E70] shadow-sm shadow-[#C5B3D3]/20 dark:border-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]"
+                        : "border-transparent text-slate-700 hover:border-[#F5CBCB] hover:bg-[#FFE2E2]/55 hover:text-[#745D83] dark:text-[#E7DDE8] dark:hover:border-[#5D4C69] dark:hover:bg-[#352B3D] dark:hover:text-[#FFE2E2]"
                     }`}
                   >
                     {link.title}
@@ -499,17 +504,18 @@ const Navbar: React.FC = () => {
                 <Link
                   href="/dashboard"
                   onClick={closeMenus}
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
+                  aria-current={isActiveLink("/dashboard") ? "page" : undefined}
+                  className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                     isActiveLink("/dashboard")
-                      ? "bg-green-50 text-green-700 shadow-sm dark:bg-neutral-900 dark:text-green-400"
-                      : "text-slate-700 hover:bg-green-50 hover:text-green-700 dark:text-neutral-200 dark:hover:bg-neutral-900/60 dark:hover:text-green-400"
+                      ? "border-[#C5B3D3] bg-[#FBEFEF] text-[#614E70] shadow-sm shadow-[#C5B3D3]/20 dark:border-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]"
+                      : "border-transparent text-slate-700 hover:border-[#F5CBCB] hover:bg-[#FFE2E2]/55 hover:text-[#745D83] dark:text-[#E7DDE8] dark:hover:border-[#5D4C69] dark:hover:bg-[#352B3D] dark:hover:text-[#FFE2E2]"
                   }`}
                 >
                   <span
-                    className={`flex size-8 items-center justify-center rounded-lg ${
+                    className={`flex size-8 items-center justify-center rounded-lg transition-colors ${
                       isActiveLink("/dashboard")
-                        ? "bg-green-100 text-green-700 dark:bg-neutral-800 dark:text-green-400"
-                        : "bg-slate-100 text-slate-500 dark:bg-neutral-900 dark:text-slate-400"
+                        ? "bg-[#FFE2E2] text-[#614E70] dark:bg-[#41354A] dark:text-[#F5CBCB]"
+                        : "bg-[#FBEFEF] text-[#745D83] dark:bg-[#2A2233] dark:text-[#C5B3D3]"
                     }`}
                   >
                     <LuLayoutDashboard size={16} />
@@ -519,34 +525,36 @@ const Navbar: React.FC = () => {
               )}
             </div>
 
+            {/* Mobile theme toggle */}
             <button
               type="button"
               onClick={toggleTheme}
-              className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 dark:text-neutral-200 dark:hover:bg-neutral-900"
+              className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-transparent px-4 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-[#F5CBCB] hover:bg-[#FBEFEF] hover:text-[#745D83] dark:text-[#E7DDE8] dark:hover:border-[#5D4C69] dark:hover:bg-[#352B3D] dark:hover:text-[#FFE2E2]"
             >
               {isDark ? (
                 <>
-                  <LuSun className="text-xl text-amber-400" />
+                  <LuSun className="text-xl text-[#F5CBCB]" />
                   Light Mode
                 </>
               ) : (
                 <>
-                  <LuMoon className="text-xl text-slate-600" />
+                  <LuMoon className="text-xl text-[#745D83]" />
                   Dark Mode
                 </>
               )}
             </button>
 
+            {/* Mobile authentication */}
             <div className="mt-4">
               {sessionPending ? (
-                <div className="flex h-11 w-full items-center justify-center rounded-full bg-slate-100 dark:bg-neutral-900">
-                  <LuLoaderCircle className="animate-spin text-green-600 dark:text-green-400" />
+                <div className="flex h-11 w-full items-center justify-center rounded-full bg-[#FBEFEF] dark:bg-[#352B3D]">
+                  <LuLoaderCircle className="animate-spin text-[#745D83] dark:text-[#F5CBCB]" />
                 </div>
               ) : !user ? (
                 <Link
                   href={loginHref}
                   onClick={closeMenus}
-                  className="flex h-11 w-full items-center justify-center rounded-full bg-green-600 text-sm font-semibold text-white shadow-sm transition-all hover:bg-green-700 dark:bg-green-500 dark:text-black dark:hover:bg-green-400"
+                  className="flex h-11 w-full items-center justify-center rounded-full bg-[#745D83] text-sm font-bold text-white shadow-sm shadow-[#C5B3D3]/40 transition-all hover:bg-[#614E70] hover:shadow-md dark:bg-[#C5B3D3] dark:text-[#211B27] dark:hover:bg-[#F5CBCB]"
                 >
                   Login
                 </Link>

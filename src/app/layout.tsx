@@ -28,45 +28,22 @@ const themeScript = `
       var savedTheme = localStorage.getItem("theme");
 
       var theme =
-        savedTheme === "light" ||
-        savedTheme === "dark"
+        savedTheme === "light" || savedTheme === "dark"
           ? savedTheme
           : "dark";
 
       var root = document.documentElement;
       var isDark = theme === "dark";
 
-      root.classList.toggle(
-        "dark",
-        isDark
-      );
-
-      root.classList.toggle(
-        "bg-black",
-        isDark
-      );
-
-      root.classList.toggle(
-        "bg-white",
-        !isDark
-      );
-
+      root.classList.toggle("dark", isDark);
       root.style.colorScheme = theme;
 
       if (!savedTheme) {
-        localStorage.setItem(
-          "theme",
-          theme
-        );
+        localStorage.setItem("theme", theme);
       }
     } catch (error) {
-      document.documentElement.classList.add(
-        "dark",
-        "bg-black"
-      );
-
-      document.documentElement.style.colorScheme =
-        "dark";
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
     }
   })();
 `;
@@ -80,7 +57,7 @@ const RootLayout = ({ children }: Readonly<RootLayoutProps>) => {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full bg-[#FBEFEF] antialiased dark:bg-[#211B27]`}
     >
       <head>
         <script
@@ -90,7 +67,7 @@ const RootLayout = ({ children }: Readonly<RootLayoutProps>) => {
         />
       </head>
 
-      <body className="min-h-full bg-white text-slate-900 transition-colors duration-300 dark:bg-black dark:text-neutral-100">
+      <body className="min-h-full bg-[#FBEFEF] text-slate-900 transition-colors duration-300 dark:bg-[#211B27] dark:text-[#F7EFF8]">
         {children}
       </body>
     </html>

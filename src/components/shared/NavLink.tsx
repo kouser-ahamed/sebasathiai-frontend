@@ -21,10 +21,10 @@ const NavLink = ({ href, children }: NavLinkProps) => {
     <Link
       href={href}
       aria-current={isActive ? "page" : undefined}
-      className={`border-b-2 pb-1 font-semibold transition-all duration-200 ${
+      className={`relative border-b-2 pb-1 font-semibold transition-all duration-200 ${
         isActive
-          ? "border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400"
-          : "border-transparent text-slate-700 hover:border-emerald-500/50 hover:text-emerald-700 dark:text-neutral-200 dark:hover:border-emerald-400/60 dark:hover:text-emerald-400"
+          ? "border-[#745D83] text-[#614E70] dark:border-[#F5CBCB] dark:text-[#FFE2E2]"
+          : "border-transparent text-slate-700 hover:border-[#C5B3D3] hover:text-[#745D83] dark:text-[#D8CADA] dark:hover:border-[#C5B3D3] dark:hover:text-[#F5CBCB]"
       }`}
     >
       {children}
