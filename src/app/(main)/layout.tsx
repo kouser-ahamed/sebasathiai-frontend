@@ -10,7 +10,7 @@ const MainLayout = ({ children }: Readonly<MainLayoutProps>) => {
     <div className="flex min-h-screen flex-col bg-[#FBEFEF] text-slate-900 transition-colors duration-300 dark:bg-[#211B27] dark:text-[#F7EFF8]">
       <Navbar />
 
-      <main className="min-h-0 flex-1">{children}</main>
+      <main className="flex-1">{children}</main>
 
       <Footer />
     </div>

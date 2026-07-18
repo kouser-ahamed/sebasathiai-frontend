@@ -6,7 +6,9 @@ import { jwt } from "better-auth/plugins";
 const uri = process.env.MONGODB_URI;
 
 if (!uri) {
-  throw new Error("MONGODB_URI is not defined in your environment variables!");
+  throw new Error(
+    "MONGODB_URI is not defined in your environment variables!",
+  );
 }
 
 const client = new MongoClient(uri);
@@ -16,25 +18,45 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
+
   emailAndPassword: {
     enabled: true,
+  },
 
-  },
   socialProviders: {
-     google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID as string, 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
-        },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
   },
+
+  user: {
+    additionalFields: {
+      role: {
+        type: ["admin", "doctor", "patient"],
+        required: false,
+        defaultValue: "patient",
+        input: false,
+        returned: true,
+      },
+
+      status: {
+        type: "string",
+        required: false,
+        defaultValue: "active",
+        input: false,
+        returned: true,
+      },
+    },
+  },
+
   session: {
     cookieCache: {
       enabled: true,
       strategy: "jwt",
       maxAge: 60 * 60 * 24 * 7, // 7 days
-
-    }
+    },
   },
-  plugins: [
-    jwt()
-  ]
+
+  plugins: [jwt()],
 });
