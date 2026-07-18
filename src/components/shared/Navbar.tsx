@@ -67,7 +67,7 @@ const NAV_LINKS = [
   },
   {
     title: "Find Doctors",
-    href: "/doctors",
+    href: "/find-doctors",
   },
   {
     title: "AI Health Assistant",

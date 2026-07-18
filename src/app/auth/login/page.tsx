@@ -166,18 +166,17 @@ const LoginPageContent = () => {
   };
 
   return (
-    <main className="relative min-h-[calc(100vh-72px)] overflow-hidden bg-[#f6f7ff] px-4 py-10 dark:bg-[#070816] sm:px-6 sm:py-14 lg:px-8">
+    <main className="relative min-h-[calc(100vh-72px)] overflow-hidden bg-[#FBEFEF] px-4 py-10 dark:bg-[#211B27] sm:px-6 sm:py-14 lg:px-8">
       <ToastContainer />
 
       {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_12%,rgba(99,102,241,0.20),transparent_30%),radial-gradient(circle_at_92%_18%,rgba(168,85,247,0.14),transparent_28%),radial-gradient(circle_at_82%_88%,rgba(6,182,212,0.16),transparent_30%)] dark:bg-[radial-gradient(circle_at_8%_12%,rgba(99,102,241,0.13),transparent_30%),radial-gradient(circle_at_92%_18%,rgba(168,85,247,0.09),transparent_28%),radial-gradient(circle_at_82%_88%,rgba(6,182,212,0.09),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_12%,rgba(197,179,211,0.55),transparent_32%),radial-gradient(circle_at_92%_18%,rgba(255,226,226,0.8),transparent_30%),radial-gradient(circle_at_82%_88%,rgba(245,203,203,0.6),transparent_32%)] dark:bg-[radial-gradient(circle_at_8%_12%,rgba(197,179,211,0.16),transparent_32%),radial-gradient(circle_at_92%_18%,rgba(255,226,226,0.08),transparent_30%),radial-gradient(circle_at_82%_88%,rgba(245,203,203,0.1),transparent_32%)]" />
 
-      <div className="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-[32px] border border-indigo-100 bg-white/95 shadow-[0_38px_110px_-48px_rgba(79,70,229,0.45)] backdrop-blur-xl dark:border-indigo-950 dark:bg-[#0d1022]/95 lg:grid-cols-[0.92fr_1.08fr]">
+      <div className="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-[32px] border border-[#F5CBCB] bg-white/95 shadow-[0_38px_110px_-48px_rgba(112,86,126,0.42)] backdrop-blur-xl dark:border-[#51415D] dark:bg-[#2A2233]/95 lg:grid-cols-[0.92fr_1.08fr]">
         {/* Left information panel */}
-        <section className="relative hidden overflow-hidden bg-linear-to-br from-indigo-950 via-violet-900 to-cyan-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
-          <div className="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-violet-400/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-28 -right-20 size-80 rounded-full bg-cyan-300/20 blur-3xl" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:32px_32px]" />
+        <section className="relative hidden overflow-hidden bg-linear-to-br from-[#C5B3D3] via-[#F5CBCB] to-[#FFE2E2] p-10 text-slate-900 lg:flex lg:flex-col lg:justify-between">
+          <div className="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-[#FBEFEF]/70 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 -right-20 size-80 rounded-full bg-white/45 blur-3xl" />
 
           <div className="relative">
             <Link href="/" className="inline-flex items-center gap-3">
@@ -187,16 +186,16 @@ const LoginPageContent = () => {
                 width={52}
                 height={52}
                 priority
-                className="size-13 rounded-full border-2 border-white/20 object-cover"
+                className="size-13 rounded-full border-2 border-white/60 object-cover"
               />
 
               <div>
                 <p className="text-2xl font-black">
                   Seba
-                  <span className="text-cyan-300">Sathi AI</span>
+                  <span className="text-[#614E70]">Sathi AI</span>
                 </p>
 
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-100/70">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-700/70">
                   Intelligent Healthcare Access
                 </p>
               </div>
@@ -206,31 +205,31 @@ const LoginPageContent = () => {
               Welcome Back to SebaSathi AI
             </h1>
 
-            <p className="mt-5 max-w-md text-sm font-medium leading-8 text-indigo-50/80">
+            <p className="mt-5 max-w-md text-sm font-medium leading-8 text-slate-700/85">
               Sign in to connect with verified doctors, manage appointments and
               access intelligent healthcare guidance from one secure place.
             </p>
 
             <div className="mt-9 space-y-5">
               <div className="flex items-start gap-4">
-                <FiHeart className="mt-1 shrink-0 text-xl text-pink-300" />
+                <FiHeart className="mt-1 shrink-0 text-xl text-rose-700" />
 
                 <div>
                   <h2 className="font-black">Patient-Centred Care</h2>
 
-                  <p className="mt-1 text-sm leading-6 text-indigo-50/70">
+                  <p className="mt-1 text-sm leading-6 text-slate-700/75">
                     Find the right doctor and request consultation easily.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <FiShield className="mt-1 shrink-0 text-xl text-sky-300" />
+                <FiShield className="mt-1 shrink-0 text-xl text-[#614E70]" />
 
                 <div>
                   <h2 className="font-black">Secure Health Support</h2>
 
-                  <p className="mt-1 text-sm leading-6 text-indigo-50/70">
+                  <p className="mt-1 text-sm leading-6 text-slate-700/75">
                     Access appointments, consultation support and digital
                     healthcare services safely.
                   </p>
@@ -238,12 +237,12 @@ const LoginPageContent = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <FiUsers className="mt-1 shrink-0 text-xl text-violet-300" />
+                <FiUsers className="mt-1 shrink-0 text-xl text-[#745D83]" />
 
                 <div>
                   <h2 className="font-black">AI Health Assistant</h2>
 
-                  <p className="mt-1 text-sm leading-6 text-indigo-50/70">
+                  <p className="mt-1 text-sm leading-6 text-slate-700/75">
                     Get preliminary symptom guidance and suitable department
                     suggestions.
                   </p>
@@ -252,7 +251,7 @@ const LoginPageContent = () => {
             </div>
           </div>
 
-          <p className="relative mt-12 text-xs font-medium text-indigo-100/60">
+          <p className="relative mt-12 text-xs font-medium text-slate-700/65">
             AI guidance is informational and does not replace consultation with
             a qualified medical professional.
           </p>
@@ -277,13 +276,13 @@ const LoginPageContent = () => {
 
                 <p className="text-2xl font-black text-slate-900 dark:text-white">
                   Seba
-                  <span className="text-indigo-600 dark:text-cyan-300">
+                  <span className="text-[#745D83] dark:text-[#E4D6EE]">
                     Sathi AI
                   </span>
                 </p>
               </Link>
 
-              <p className="mt-6 text-xs font-extrabold uppercase tracking-[0.16em] text-indigo-600 dark:text-cyan-300 lg:mt-0">
+              <p className="mt-6 text-xs font-extrabold uppercase tracking-[0.16em] text-[#745D83] dark:text-[#E4D6EE] lg:mt-0">
                 Secure Account Access
               </p>
 
@@ -291,13 +290,13 @@ const LoginPageContent = () => {
                 Sign In to SebaSathi AI
               </h1>
 
-              <p className="mx-auto mt-3 max-w-md text-sm font-medium leading-7 text-slate-600 dark:text-zinc-400">
+              <p className="mx-auto mt-3 max-w-md text-sm font-medium leading-7 text-slate-600 dark:text-[#D8CADA]">
                 Continue to your healthcare dashboard and services.
               </p>
             </div>
 
             {registrationCompleted && (
-              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-3 text-violet-700 dark:border-violet-900/70 dark:bg-violet-950/30 dark:text-violet-300">
+              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-[#C5B3D3] bg-[#FBEFEF] px-4 py-3 text-[#614E70] dark:border-[#6B5878] dark:bg-[#3B3045] dark:text-[#E4D6EE]">
                 <FiCheckCircle className="mt-0.5 shrink-0 text-lg" />
 
                 <p className="text-sm font-semibold leading-6">
@@ -308,7 +307,7 @@ const LoginPageContent = () => {
             )}
 
             {callbackURL !== "/" && (
-              <div className="mt-4 flex items-start gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sky-700 dark:border-sky-900/70 dark:bg-sky-950/30 dark:text-sky-400">
+              <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#F5CBCB] bg-[#FFE2E2]/70 px-4 py-3 text-[#765454] dark:border-[#765454] dark:bg-[#412F35] dark:text-[#F5CBCB]">
                 <FiArrowRight className="mt-0.5 shrink-0 text-lg" />
 
                 <p className="text-sm font-semibold leading-6">
@@ -333,17 +332,17 @@ const LoginPageContent = () => {
               }}
             >
               <TextField isRequired name="email" type="email">
-                <Label className="text-sm font-bold text-slate-700 dark:text-zinc-300">
+                <Label className="text-sm font-bold text-slate-700 dark:text-[#E7DDE8]">
                   Email Address
                 </Label>
 
                 <div className="relative mt-2">
-                  <FiMail className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
+                  <FiMail className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-[#9A83A8] dark:text-[#C5B3D3]" />
 
                   <Input
                     placeholder="john@example.com"
                     autoComplete="email"
-                    className="h-12 w-full rounded-2xl border border-slate-300 bg-white pl-11 pr-4 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:border-indigo-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 dark:border-indigo-950 dark:bg-[#11152b] dark:text-white dark:placeholder:text-slate-600 dark:hover:border-indigo-700 dark:focus:border-cyan-400 dark:focus:ring-cyan-950/60"
+                    className="h-12 w-full rounded-2xl border border-[#E4D5E7] bg-white pl-11 pr-4 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:border-[#C5B3D3] focus:border-[#9A83A8] focus:ring-4 focus:ring-[#C5B3D3]/30 dark:border-[#5D4C69] dark:bg-[#352B3D] dark:text-white dark:placeholder:text-[#A997AE] dark:hover:border-[#C5B3D3] dark:focus:border-[#F5CBCB] dark:focus:ring-[#C5B3D3]/20"
                   />
                 </div>
 
@@ -356,19 +355,19 @@ const LoginPageContent = () => {
                 name="password"
                 type="password"
               >
-                <Label className="text-sm font-bold text-slate-700 dark:text-zinc-300">
+                <Label className="text-sm font-bold text-slate-700 dark:text-[#E7DDE8]">
                   Password
                 </Label>
 
                 <div className="relative mt-2">
-                  <FiLock className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
+                  <FiLock className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-[#9A83A8] dark:text-[#C5B3D3]" />
 
                   <Input
                     placeholder="Enter your password"
                     autoComplete="current-password"
                     value={password}
                     onChange={handlePasswordChange}
-                    className="h-12 w-full rounded-2xl border border-slate-300 bg-white pl-11 pr-4 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:border-indigo-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 dark:border-indigo-950 dark:bg-[#11152b] dark:text-white dark:placeholder:text-slate-600 dark:hover:border-indigo-700 dark:focus:border-cyan-400 dark:focus:ring-cyan-950/60"
+                    className="h-12 w-full rounded-2xl border border-[#E4D5E7] bg-white pl-11 pr-4 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:border-[#C5B3D3] focus:border-[#9A83A8] focus:ring-4 focus:ring-[#C5B3D3]/30 dark:border-[#5D4C69] dark:bg-[#352B3D] dark:text-white dark:placeholder:text-[#A997AE] dark:hover:border-[#C5B3D3] dark:focus:border-[#F5CBCB] dark:focus:ring-[#C5B3D3]/20"
                   />
                 </div>
 
@@ -379,7 +378,7 @@ const LoginPageContent = () => {
                 <Button
                   type="submit"
                   isDisabled={isSubmitting || isGoogleLoading}
-                  className="group h-12 w-full rounded-2xl bg-linear-to-r from-indigo-600 via-violet-600 to-cyan-500 font-bold text-white shadow-lg shadow-indigo-600/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-violet-500/25 dark:from-indigo-500 dark:via-violet-500 dark:to-cyan-400 dark:text-white"
+                  className="group h-12 w-full rounded-2xl bg-linear-to-r from-[#C5B3D3] via-[#F5CBCB] to-[#FFE2E2] font-bold text-slate-900 shadow-lg shadow-[#C5B3D3]/35 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#C5B3D3]/45 dark:from-[#8F789F] dark:via-[#B8848E] dark:to-[#CFA4A4] dark:text-white"
                 >
                   {isSubmitting ? (
                     <>
@@ -397,7 +396,7 @@ const LoginPageContent = () => {
                 <Button
                   type="reset"
                   isDisabled={isSubmitting || isGoogleLoading}
-                  className="h-12 w-full rounded-2xl border border-slate-300 bg-white font-bold text-slate-700 transition-all hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-800"
+                  className="h-12 w-full rounded-2xl border border-[#E4D5E7] bg-white font-bold text-slate-700 transition-all hover:-translate-y-0.5 hover:border-[#C5B3D3] hover:bg-[#FBEFEF] dark:border-[#5D4C69] dark:bg-[#352B3D] dark:text-[#E7DDE8] dark:hover:border-[#C5B3D3] dark:hover:bg-[#41354A]"
                 >
                   Reset
                 </Button>
@@ -405,20 +404,20 @@ const LoginPageContent = () => {
             </Form>
 
             <div className="my-7 flex items-center gap-4">
-              <div className="h-px flex-1 bg-slate-200 dark:bg-zinc-800" />
+              <div className="h-px flex-1 bg-[#F5CBCB] dark:bg-[#5D4C69]" />
 
-              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-400 dark:text-zinc-600">
+              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#9A83A8] dark:text-[#C5B3D3]">
                 Or
               </span>
 
-              <div className="h-px flex-1 bg-slate-200 dark:bg-zinc-800" />
+              <div className="h-px flex-1 bg-[#F5CBCB] dark:bg-[#5D4C69]" />
             </div>
 
             <Button
               type="button"
               isDisabled={isSubmitting || isGoogleLoading}
               onPress={handleGoogleSignIn}
-              className="h-12 w-full rounded-2xl border border-slate-300 bg-white font-bold text-slate-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700 dark:border-indigo-950 dark:bg-[#11152b] dark:text-slate-300 dark:hover:border-cyan-800 dark:hover:bg-cyan-950/20 dark:hover:text-cyan-300"
+              className="h-12 w-full rounded-2xl border border-[#E4D5E7] bg-white font-bold text-slate-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#C5B3D3] hover:bg-[#FBEFEF] hover:text-[#614E70] dark:border-[#5D4C69] dark:bg-[#352B3D] dark:text-[#E7DDE8] dark:hover:border-[#C5B3D3] dark:hover:bg-[#41354A] dark:hover:text-[#FFE2E2]"
             >
               {isGoogleLoading ? (
                 <FiLoader className="animate-spin" />
@@ -428,11 +427,11 @@ const LoginPageContent = () => {
               Continue with Google
             </Button>
 
-            <p className="mt-7 text-center text-sm font-medium text-slate-500 dark:text-zinc-400">
+            <p className="mt-7 text-center text-sm font-medium text-slate-500 dark:text-[#D8CADA]">
               Don&apos;t have an account?{" "}
               <Link
                 href={signupHref}
-                className="font-extrabold text-indigo-700 transition-colors hover:text-violet-600 dark:text-cyan-300 dark:hover:text-cyan-200"
+                className="font-extrabold text-[#745D83] transition-colors hover:text-[#614E70] dark:text-[#F5CBCB] dark:hover:text-[#FFE2E2]"
               >
                 Create an account
               </Link>
@@ -446,8 +445,8 @@ const LoginPageContent = () => {
 
 const LoginPageFallback = () => {
   return (
-    <main className="flex min-h-[calc(100vh-72px)] items-center justify-center bg-[#f6f7ff] dark:bg-[#070816]">
-      <div className="flex items-center gap-3 text-sm font-bold text-indigo-700 dark:text-cyan-300">
+    <main className="flex min-h-[calc(100vh-72px)] items-center justify-center bg-[#FBEFEF] dark:bg-[#211B27]">
+      <div className="flex items-center gap-3 text-sm font-bold text-[#745D83] dark:text-[#F5CBCB]">
         <FiLoader className="animate-spin text-xl" />
         Loading login page...
       </div>
