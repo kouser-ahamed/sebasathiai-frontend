@@ -70,7 +70,7 @@ const doctorPayload = (values: DoctorFormValues, includePassword: boolean) => {
     specialization: values.specialization.trim(),
     qualification: values.qualification.trim(),
     experienceYears: Number(values.experienceYears) || 0,
-    chamber: values.chamber.trim(),
+    hospital: values.hospital.trim(),
     address: values.address.trim(),
     bio: values.bio.trim(),
     image: values.image.trim(),

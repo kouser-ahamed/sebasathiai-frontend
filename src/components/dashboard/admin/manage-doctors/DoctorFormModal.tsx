@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  type ChangeEvent,
-  type FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { LuLoaderCircle, LuSave } from "react-icons/lu";
-import { Doctor, DoctorFormValues } from "./types";
+
 import ModalShell from "./ModalShell";
-
-
+import type { Doctor, DoctorFormValues } from "./types";
 
 interface DoctorFormModalProps {
   isOpen: boolean;
@@ -29,7 +23,7 @@ const emptyValues: DoctorFormValues = {
   specialization: "",
   qualification: "",
   experienceYears: "",
-  chamber: "",
+  hospital: "",
   address: "",
   bio: "",
   image: "",
@@ -45,7 +39,7 @@ const toFormValues = (doctor: Doctor | null): DoctorFormValues =>
         specialization: doctor.specialization,
         qualification: doctor.qualification,
         experienceYears: String(doctor.experienceYears || ""),
-        chamber: doctor.chamber,
+        hospital: doctor.hospital,
         address: doctor.address,
         bio: doctor.bio,
         image: doctor.image || "",
@@ -86,13 +80,19 @@ const DoctorFormModal = ({
     event.preventDefault();
     setValidationError("");
 
-    if (!values.name.trim() || !values.email.trim() || !values.specialization.trim()) {
+    if (
+      !values.name.trim() ||
+      !values.email.trim() ||
+      !values.specialization.trim()
+    ) {
       setValidationError("Name, email and specialization are required.");
       return;
     }
 
     if (mode === "create" && values.password.length < 8) {
-      setValidationError("Temporary password must contain at least 8 characters.");
+      setValidationError(
+        "Temporary password must contain at least 8 characters.",
+      );
       return;
     }
 
@@ -210,12 +210,12 @@ const DoctorFormModal = ({
           </label>
 
           <label className={labelClass}>
-            Chamber
+            Hospital
             <input
-              name="chamber"
-              value={values.chamber}
+              name="hospital"
+              value={values.hospital}
               onChange={updateValue}
-              placeholder="Hospital or chamber name"
+              placeholder="Hospital name"
               className={inputClass}
             />
           </label>

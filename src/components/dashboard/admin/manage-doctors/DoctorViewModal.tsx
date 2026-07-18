@@ -211,8 +211,8 @@ const DoctorViewModal = ({
 
               <InformationItem
                 icon={LuHospital}
-                label="Chamber"
-                value={doctor.chamber}
+                label="Hospital"
+                value={doctor.hospital}
               />
 
               <InformationItem

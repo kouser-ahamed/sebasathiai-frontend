@@ -10,7 +10,7 @@ export interface Doctor {
   specialization: string;
   qualification: string;
   experienceYears: number;
-  chamber: string;
+  hospital: string;
   address: string;
   bio: string;
   role: "doctor";
@@ -28,7 +28,7 @@ export interface DoctorFormValues {
   specialization: string;
   qualification: string;
   experienceYears: string;
-  chamber: string;
+  hospital: string;
   address: string;
   bio: string;
   image: string;
