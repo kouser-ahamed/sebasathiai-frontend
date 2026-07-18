@@ -1,33 +1,39 @@
 "use client";
 
+import type { ComponentType } from "react";
 import { useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
-
-import {
-  usePathname,
-  useRouter,
-} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import {
   ArrowRightFromSquare,
+  BookOpen,
+  Calendar,
+  Comment,
+  FilePlus,
+  GearDot,
   House,
   LayoutSideContentLeft,
+  Paperclip,
+  PersonPlus,
+  PersonsLock,
+  PersonWorker,
+  ShieldCheck,
   SquareChartBar,
+  Star,
 } from "@gravity-ui/icons";
 
 import { Drawer } from "@heroui/react";
 
 import { authClient } from "@/lib/auth-client";
 
-type DashboardRole =
-  | "admin"
-  | "patient"
-  | "doctor";
+type DashboardRole = "admin" | "patient" | "doctor";
 
 interface DashboardUser {
   id?: string;
+  _id?: string;
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -39,40 +45,153 @@ interface DashboardSideBarProps {
   user: DashboardUser;
 }
 
+type DashboardIcon = ComponentType<{
+  className?: string;
+}>;
+
 interface DashboardNavItem {
   label: string;
   href: string;
-  icon: typeof House;
-  exact?: boolean;
+  icon: DashboardIcon;
 }
 
-const getDashboardRole = (
-  role?: string | null,
-): DashboardRole => {
-  if (
+const isDashboardRole = (
+  role: unknown,
+): role is DashboardRole => {
+  return (
     role === "admin" ||
-    role === "doctor" ||
-    role === "patient"
-  ) {
-    return role;
-  }
-
-  return "patient";
+    role === "patient" ||
+    role === "doctor"
+  );
 };
 
-const getRoleTitle = (
-  role: DashboardRole,
-): string => {
-  const roleTitles: Record<
-    DashboardRole,
-    string
-  > = {
-    admin: "Admin",
-    doctor: "Doctor",
-    patient: "Patient",
-  };
+const dashboardItems: Record<
+  DashboardRole,
+  DashboardNavItem[]
+> = {
+  patient: [
+    {
+      label: "Home",
+      href: "/",
+      icon: House,
+    },
+    {
+      label: "Overview",
+      href: "/dashboard/patient",
+      icon: SquareChartBar,
+    },
+    {
+      label: "My Appointments",
+      href: "/dashboard/patient/appointments",
+      icon: Calendar,
+    },
+    {
+      label: "Prescriptions",
+      href: "/dashboard/patient/prescriptions",
+      icon: FilePlus,
+    },
+    {
+      label: "Consultations",
+      href: "/dashboard/patient/consultations",
+      icon: Comment,
+    },
+    {
+      label: "Favorite Doctors",
+      href: "/dashboard/patient/favorite-doctors",
+      icon: Star,
+    },
+    {
+      label: "AI Health History",
+      href: "/dashboard/patient/ai-health-history",
+      icon: BookOpen,
+    },
+  ],
 
-  return roleTitles[role];
+  doctor: [
+    {
+      label: "Home",
+      href: "/",
+      icon: House,
+    },
+    {
+      label: "Overview",
+      href: "/dashboard/doctor",
+      icon: SquareChartBar,
+    },
+    {
+      label: "Appointments",
+      href: "/dashboard/doctor/appointments",
+      icon: Calendar,
+    },
+    {
+      label: "My Patients",
+      href: "/dashboard/doctor/patients",
+      icon: PersonsLock,
+    },
+    {
+      label: "Prescriptions",
+      href: "/dashboard/doctor/prescriptions",
+      icon: FilePlus,
+    },
+    {
+      label: "Consultation Records",
+      href: "/dashboard/doctor/consultations",
+      icon: Paperclip,
+    },
+    {
+      label: "Availability",
+      href: "/dashboard/doctor/availability",
+      icon: Calendar,
+    },
+    {
+      label: "Doctor Profile",
+      href: "/dashboard/doctor/profile",
+      icon: GearDot,
+    },
+  ],
+
+  admin: [
+    {
+      label: "Home",
+      href: "/",
+      icon: House,
+    },
+    {
+      label: "Overview",
+      href: "/dashboard/admin",
+      icon: ShieldCheck,
+    },
+    {
+      label: "Manage Users",
+      href: "/dashboard/admin/users",
+      icon: PersonsLock,
+    },
+    {
+      label: "Manage Doctors",
+      href: "/dashboard/admin/doctors",
+      icon: PersonWorker,
+    },
+    {
+      label: "Doctor Applications",
+      href: "/dashboard/admin/doctor-applications",
+      icon: PersonPlus,
+    },
+    {
+      label: "Manage Appointments",
+      href: "/dashboard/admin/appointments",
+      icon: Calendar,
+    },
+    {
+      label: "Reports",
+      href: "/dashboard/admin/reports",
+      icon: BookOpen,
+    },
+    {
+      label: "Settings",
+      href: "/dashboard/admin/settings",
+      icon: GearDot,
+    },
+  ],
 };
 
 const DashboardSideBar = ({
@@ -87,53 +206,28 @@ const DashboardSideBar = ({
   const [isLoggingOut, setIsLoggingOut] =
     useState<boolean>(false);
 
-  const role = getDashboardRole(user?.role);
-  const roleTitle = getRoleTitle(role);
+  const role: DashboardRole =
+    isDashboardRole(user?.role)
+      ? user.role
+      : "patient";
 
-  const dashboardHref: Record<
-    DashboardRole,
-    string
-  > = {
-    admin: "/dashboard/admin",
-    doctor: "/dashboard/doctor",
-    patient: "/dashboard/patient",
+  const navItems = dashboardItems[role];
+
+  const closeSidebar = (): void => {
+    setIsOpen(false);
   };
 
-  /*
-   * For now, every role has only Home and Dashboard.
-   * More role-specific pages can be added later.
-   */
-  const navItems: DashboardNavItem[] = [
-    {
-      label: "Home",
-      href: "/",
-      icon: House,
-      exact: true,
-    },
-    {
-      label: `${roleTitle} Dashboard`,
-      href: dashboardHref[role],
-      icon: SquareChartBar,
-    },
-  ];
-
   const isActiveLink = (
-    item: DashboardNavItem,
+    href: string,
   ): boolean => {
-    if (item.exact) {
-      return pathname === item.href;
+    if (href === "/") {
+      return pathname === "/";
     }
 
     return (
-      pathname === item.href ||
-      pathname.startsWith(
-        `${item.href}/`,
-      )
+      pathname === href ||
+      pathname.startsWith(`${href}/`)
     );
-  };
-
-  const closeDrawer = (): void => {
-    setIsOpen(false);
   };
 
   const handleLogout =
@@ -147,10 +241,15 @@ const DashboardSideBar = ({
       try {
         await authClient.signOut();
 
-        closeDrawer();
+        closeSidebar();
 
-        router.replace("/auth/signin");
+        router.replace("/");
         router.refresh();
+      } catch (error: unknown) {
+        console.error(
+          "Dashboard logout error:",
+          error,
+        );
       } finally {
         setIsLoggingOut(false);
       }
@@ -167,7 +266,7 @@ const DashboardSideBar = ({
       {/* Logo */}
       <Link
         href="/"
-        onClick={closeDrawer}
+        onClick={closeSidebar}
         className="group flex items-center gap-2.5 rounded-2xl px-2 py-2"
       >
         <div className="relative shrink-0">
@@ -176,8 +275,8 @@ const DashboardSideBar = ({
             alt="SebaSathi AI logo"
             width={44}
             height={44}
-            className="size-11 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
             priority
+            className="size-11 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
           <div className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-[#C5B3D3]/50 transition-all duration-300 group-hover:ring-[#745D83]/70 dark:ring-[#F5CBCB]/30 dark:group-hover:ring-[#F5CBCB]/60" />
@@ -194,34 +293,33 @@ const DashboardSideBar = ({
         </h1>
       </Link>
 
-      {/* User profile */}
+      {/* User information */}
       <div className="my-4 border-y border-[#F5CBCB] py-4 dark:border-[#41354A]">
         <div className="flex items-center gap-3 rounded-2xl bg-[#FBEFEF] p-3 dark:bg-[#352B3D]">
           <div className="relative shrink-0">
-            <span className="flex size-12 items-center justify-center overflow-hidden rounded-full border-2 border-[#C5B3D3] bg-white text-sm font-bold text-[#745D83] shadow-sm dark:border-[#745D83] dark:bg-[#211B27] dark:text-[#F5CBCB]">
-              {user?.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={user.image}
-                  alt={
-                    user?.name ||
-                    "User profile"
-                  }
-                  referrerPolicy="no-referrer"
-                  className="h-full w-full rounded-full object-cover"
-                />
-              ) : (
-                userInitial
-              )}
-            </span>
+            {user?.image ? (
+              <Image
+                src={user.image}
+                alt={user?.name || "User"}
+                width={48}
+                height={48}
+                referrerPolicy="no-referrer"
+                unoptimized
+                className="size-12 rounded-full border-2 border-[#C5B3D3] object-cover dark:border-[#745D83]"
+              />
+            ) : (
+              <span className="flex size-12 items-center justify-center rounded-full border-2 border-[#C5B3D3] bg-white text-sm font-black text-[#745D83] dark:border-[#745D83] dark:bg-[#211B27] dark:text-[#F5CBCB]">
+                {userInitial}
+              </span>
+            )}
 
-            <span className="absolute bottom-0 right-0 size-3.5 rounded-full border-2 border-white bg-[#745D83] dark:border-[#352B3D] dark:bg-[#F5CBCB]" />
+            <span className="absolute bottom-0 right-0 size-3.5 rounded-full border-2 border-[#FBEFEF] bg-[#745D83] dark:border-[#352B3D] dark:bg-[#F5CBCB]" />
           </div>
 
           <div className="min-w-0 flex-1">
-            <h2 className="truncate text-sm font-bold text-slate-900 dark:text-white">
+            <h3 className="truncate text-sm font-bold text-slate-900 dark:text-white">
               {user?.name || "User"}
-            </h2>
+            </h3>
 
             {user?.email && (
               <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-[#A997AE]">
@@ -234,8 +332,7 @@ const DashboardSideBar = ({
                 {role}
               </span>
 
-              {user?.status ===
-                "blocked" && (
+              {user?.status === "blocked" && (
                 <span className="rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-red-600 dark:text-red-400">
                   Blocked
                 </span>
@@ -245,11 +342,12 @@ const DashboardSideBar = ({
         </div>
       </div>
 
-      {/* Navigation */}
+      {/* Dashboard navigation */}
       <div className="flex flex-1 flex-col gap-1.5">
         {navItems.map((item) => {
-          const active =
-            isActiveLink(item);
+          const active = isActiveLink(
+            item.href,
+          );
 
           const Icon = item.icon;
 
@@ -257,11 +355,9 @@ const DashboardSideBar = ({
             <Link
               key={item.href}
               href={item.href}
-              onClick={closeDrawer}
+              onClick={closeSidebar}
               aria-current={
-                active
-                  ? "page"
-                  : undefined
+                active ? "page" : undefined
               }
               className={`group flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                 active
@@ -312,7 +408,7 @@ const DashboardSideBar = ({
         {navContent}
       </aside>
 
-      {/* Mobile menu button */}
+      {/* Mobile sidebar button */}
       <button
         type="button"
         onClick={() => setIsOpen(true)}

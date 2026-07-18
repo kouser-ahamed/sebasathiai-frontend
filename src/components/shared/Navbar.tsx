@@ -87,6 +87,8 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const dashboardHref = "/dashboard";
+
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
@@ -380,17 +382,17 @@ const Navbar: React.FC = () => {
 
                   <div className="flex flex-col gap-0.5">
                     <Link
-                      href="/dashboard"
+                      href={dashboardHref}
                       onClick={closeMenus}
                       className={`group flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
-                        isActiveLink("/dashboard")
+                        isActiveLink(dashboardHref)
                           ? "bg-[#FBEFEF] text-[#614E70] dark:bg-[#352B3D] dark:text-[#F5CBCB]"
                           : "text-slate-700 hover:bg-[#FBEFEF] hover:text-[#745D83] dark:text-[#E7DDE8] dark:hover:bg-[#352B3D] dark:hover:text-[#FFE2E2]"
                       }`}
                     >
                       <span
                         className={`flex size-8 items-center justify-center rounded-lg transition-all ${
-                          isActiveLink("/dashboard")
+                          isActiveLink(dashboardHref)
                             ? "bg-[#FFE2E2] text-[#614E70] dark:bg-[#41354A] dark:text-[#F5CBCB]"
                             : "bg-slate-100 text-slate-500 group-hover:bg-[#FFE2E2] group-hover:text-[#745D83] dark:bg-[#2A2233] dark:text-[#A997AE] dark:group-hover:bg-[#41354A] dark:group-hover:text-[#FFE2E2]"
                         }`}
@@ -502,18 +504,18 @@ const Navbar: React.FC = () => {
 
               {user && (
                 <Link
-                  href="/dashboard"
+                      href={dashboardHref}
                   onClick={closeMenus}
-                  aria-current={isActiveLink("/dashboard") ? "page" : undefined}
+                      aria-current={isActiveLink(dashboardHref) ? "page" : undefined}
                   className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold transition-all duration-200 ${
-                    isActiveLink("/dashboard")
+                    isActiveLink(dashboardHref)
                       ? "border-[#C5B3D3] bg-[#FBEFEF] text-[#614E70] shadow-sm shadow-[#C5B3D3]/20 dark:border-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]"
                       : "border-transparent text-slate-700 hover:border-[#F5CBCB] hover:bg-[#FFE2E2]/55 hover:text-[#745D83] dark:text-[#E7DDE8] dark:hover:border-[#5D4C69] dark:hover:bg-[#352B3D] dark:hover:text-[#FFE2E2]"
                   }`}
                 >
                   <span
                     className={`flex size-8 items-center justify-center rounded-lg transition-colors ${
-                      isActiveLink("/dashboard")
+                      isActiveLink(dashboardHref)
                         ? "bg-[#FFE2E2] text-[#614E70] dark:bg-[#41354A] dark:text-[#F5CBCB]"
                         : "bg-[#FBEFEF] text-[#745D83] dark:bg-[#2A2233] dark:text-[#C5B3D3]"
                     }`}
