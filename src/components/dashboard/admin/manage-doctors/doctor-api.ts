@@ -1,14 +1,19 @@
 "use client";
 
 import { getTokenClient } from "@/lib/getTokenClient";
-import { DeleteDoctorResponse, DoctorFormValues, DoctorMutationResponse, DoctorsResponse, DoctorStatus } from "./types";
 
-
+import type {
+  DeleteDoctorResponse,
+  DoctorDetailsResponse,
+  DoctorFormValues,
+  DoctorMutationResponse,
+  DoctorsResponse,
+  DoctorStatus,
+} from "./types";
 
 const getApiBaseUrl = (): string => {
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL;
+    process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL;
 
   if (!baseUrl) {
     throw new Error(
@@ -32,10 +37,7 @@ const readError = async (response: Response): Promise<string> => {
   return `Request failed with status ${response.status}`;
 };
 
-const request = async <T>(
-  path: string,
-  init: RequestInit = {},
-): Promise<T> => {
+const request = async <T>(path: string, init: RequestInit = {}): Promise<T> => {
   const { data, error } = await getTokenClient();
 
   if (error || !data?.token) {
@@ -60,10 +62,7 @@ const request = async <T>(
   return (await response.json()) as T;
 };
 
-const doctorPayload = (
-  values: DoctorFormValues,
-  includePassword: boolean,
-) => {
+const doctorPayload = (values: DoctorFormValues, includePassword: boolean) => {
   const payload: Record<string, string | number> = {
     name: values.name.trim(),
     email: values.email.trim().toLowerCase(),
@@ -86,6 +85,13 @@ const doctorPayload = (
 
 export const fetchDoctorsClient = (): Promise<DoctorsResponse> =>
   request<DoctorsResponse>("/api/v1/admin/doctors?limit=100");
+
+export const fetchDoctorDetails = (
+  doctorId: string,
+): Promise<DoctorDetailsResponse> =>
+  request<DoctorDetailsResponse>(
+    `/api/v1/admin/doctors/${encodeURIComponent(doctorId)}`,
+  );
 
 export const createDoctor = (
   values: DoctorFormValues,
@@ -119,9 +125,7 @@ export const updateDoctorStatus = (
     },
   );
 
-export const deleteDoctor = (
-  doctorId: string,
-): Promise<DeleteDoctorResponse> =>
+export const deleteDoctor = (doctorId: string): Promise<DeleteDoctorResponse> =>
   request<DeleteDoctorResponse>(
     `/api/v1/admin/doctors/${encodeURIComponent(doctorId)}`,
     { method: "DELETE" },

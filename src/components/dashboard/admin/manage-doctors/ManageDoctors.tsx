@@ -2,16 +2,21 @@
 
 import { useMemo, useState } from "react";
 import { LuPlus, LuRefreshCw, LuSearch, LuStethoscope } from "react-icons/lu";
-import { Doctor, DoctorFormValues, DoctorStatus } from "./types";
-import DoctorTable from "./DoctorTable";
-import DoctorFormModal from "./DoctorFormModal";
+
 import ConfirmActionModal from "./ConfirmActionModal";
-import { createDoctor, deleteDoctor, fetchDoctorsClient, updateDoctor, updateDoctorStatus } from "./doctor-api";
+import DoctorFormModal from "./DoctorFormModal";
+import DoctorViewModal from "./DoctorViewModal";
+import DoctorTable from "./DoctorTable";
+import {
+  createDoctor,
+  deleteDoctor,
+  fetchDoctorDetails,
+  fetchDoctorsClient,
+  updateDoctor,
+  updateDoctorStatus,
+} from "./doctor-api";
 
-
-
-
-
+import type { Doctor, DoctorFormValues, DoctorStatus } from "./types";
 
 interface ManageDoctorsProps {
   initialDoctors: Doctor[];
@@ -36,6 +41,11 @@ const ManageDoctors = ({
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+
+  const [viewOpen, setViewOpen] = useState(false);
+  const [viewDoctor, setViewDoctor] = useState<Doctor | null>(null);
+  const [isViewing, setIsViewing] = useState(false);
+  const [viewError, setViewError] = useState("");
 
   const [deleteTarget, setDeleteTarget] = useState<Doctor | null>(null);
   const [statusTarget, setStatusTarget] = useState<Doctor | null>(null);
@@ -85,6 +95,27 @@ const ManageDoctors = ({
     setFormMode("create");
     setSelectedDoctor(null);
     setFormOpen(true);
+  };
+
+  const openView = async (doctor: Doctor): Promise<void> => {
+    setViewOpen(true);
+    setViewDoctor(doctor);
+    setViewError("");
+    setIsViewing(true);
+
+    try {
+      const response = await fetchDoctorDetails(doctor.id);
+
+      setViewDoctor(response.doctor);
+    } catch (error: unknown) {
+      setViewError(
+        error instanceof Error
+          ? `${error.message} Showing the available list information instead.`
+          : "Doctor details could not be loaded. Showing the available list information instead.",
+      );
+    } finally {
+      setIsViewing(false);
+    }
   };
 
   const openEdit = (doctor: Doctor) => {
@@ -317,6 +348,9 @@ const ManageDoctors = ({
       <DoctorTable
         doctors={filteredDoctors}
         readOnly={readOnly}
+        onView={(doctor) => {
+          void openView(doctor);
+        }}
         onEdit={openEdit}
         onDelete={(doctor) => {
           if (readOnly) {
@@ -340,6 +374,18 @@ const ManageDoctors = ({
           clearFeedback();
           setStatusTarget(doctor);
           setNextStatus(status);
+        }}
+      />
+
+      <DoctorViewModal
+        isOpen={viewOpen}
+        doctor={viewDoctor}
+        isLoading={isViewing}
+        errorMessage={viewError}
+        onClose={() => {
+          setViewOpen(false);
+          setViewDoctor(null);
+          setViewError("");
         }}
       />
 

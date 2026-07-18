@@ -2,6 +2,7 @@ export type DoctorStatus = "active" | "blocked";
 
 export interface Doctor {
   id: string;
+  userId: string;
   name: string;
   email: string;
   image: string | null;
@@ -14,7 +15,7 @@ export interface Doctor {
   bio: string;
   role: "doctor";
   status: DoctorStatus;
-  emailVerified: boolean;
+  emailVerified?: boolean;
   createdAt: string | null;
   updatedAt: string | null;
 }
@@ -55,4 +56,10 @@ export interface DeleteDoctorResponse {
   success: boolean;
   message: string;
   deletedDoctorId: string;
+}
+
+export interface DoctorDetailsResponse {
+  success: boolean;
+  doctor: Doctor;
+  message?: string;
 }

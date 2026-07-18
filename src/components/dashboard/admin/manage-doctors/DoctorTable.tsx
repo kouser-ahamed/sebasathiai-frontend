@@ -1,12 +1,19 @@
 "use client";
 
-import { LuBan, LuCircleCheck, LuPencil, LuTrash2 } from "react-icons/lu";
+import {
+  LuBan,
+  LuCircleCheck,
+  LuEye,
+  LuPencil,
+  LuTrash2,
+} from "react-icons/lu";
 
 import type { Doctor, DoctorStatus } from "./types";
 
 interface DoctorTableProps {
   doctors: Doctor[];
   readOnly: boolean;
+  onView: (doctor: Doctor) => void;
   onEdit: (doctor: Doctor) => void;
   onDelete: (doctor: Doctor) => void;
   onStatusChange: (doctor: Doctor, status: DoctorStatus) => void;
@@ -35,6 +42,7 @@ const DoctorAvatar = ({ doctor }: { doctor: Doctor }) => {
 const DoctorTable = ({
   doctors,
   readOnly,
+  onView,
   onEdit,
   onDelete,
   onStatusChange,
@@ -119,6 +127,16 @@ const DoctorTable = ({
 
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => onView(doctor)}
+                        title="View doctor details"
+                        className="flex size-9 items-center justify-center rounded-xl border border-[#C5B3D3] text-[#614E70] transition hover:bg-[#FBEFEF] dark:border-[#745D83] dark:text-[#F5CBCB] dark:hover:bg-[#352B3D]"
+                        aria-label={`View ${doctor.name}`}
+                      >
+                        <LuEye className="size-4" />
+                      </button>
+
                       <button
                         type="button"
                         onClick={() => onEdit(doctor)}
@@ -226,7 +244,15 @@ const DoctorTable = ({
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-3 gap-2 border-t border-[#F5CBCB] pt-4 dark:border-[#41354A]">
+            <div className="mt-4 grid grid-cols-2 gap-2 border-t border-[#F5CBCB] pt-4 dark:border-[#41354A] sm:grid-cols-4">
+              <button
+                type="button"
+                onClick={() => onView(doctor)}
+                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl border border-[#C5B3D3] text-xs font-bold text-[#614E70] dark:border-[#745D83] dark:text-[#F5CBCB]"
+              >
+                <LuEye className="size-4" /> View
+              </button>
+
               <button
                 type="button"
                 onClick={() => onEdit(doctor)}
