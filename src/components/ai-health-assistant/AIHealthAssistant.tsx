@@ -658,11 +658,11 @@ const AIHealthAssistant = () => {
                     conversation.
                   </p>
                   <Link
-                    href="/doctors"
+                    href="/dashboard/patient/ai-health-history"
                     className="mt-4 inline-flex items-center gap-2 text-sm font-black text-[#745D83] dark:text-[#F5CBCB]"
                   >
                     <LuStethoscope className="size-4" />
-                    Browse doctors
+                    Browse Health History
                   </Link>
                 </div>
               )}
