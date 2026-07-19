@@ -1,11 +1,7 @@
-import React from 'react';
+import PatientAiHealthHistory from "@/components/dashboard/patient/AI-health-History/PatientAiHealthHistory";
 
-const PatientAiHealthHistory = () => {
-    return (
-        <div>
-            <h1>Patient AI Health History</h1>
-        </div>
-    );
+const PatientAiHealthHistoryPage = () => {
+  return <PatientAiHealthHistory />;
 };
 
-export default PatientAiHealthHistory;
+export default PatientAiHealthHistoryPage;
