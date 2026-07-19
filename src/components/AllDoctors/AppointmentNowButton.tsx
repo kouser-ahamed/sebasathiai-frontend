@@ -33,7 +33,7 @@ const AppointmentNowButton = ({
   const handleAppointment = async () => {
     if (!currentUser?.id) {
       router.push(
-        `/auth/signin?callbackUrl=${encodeURIComponent(`/doctors/${doctorId}`)}`,
+        `/auth/signin?callbackUrl=${encodeURIComponent(`/find-doctors/${doctorId}/appointment`)}`,
       );
       return;
     }
@@ -64,7 +64,7 @@ const AppointmentNowButton = ({
         return;
       }
 
-      router.push(`/doctors/${doctorId}/appointment`);
+      router.push(`/find-doctors/${doctorId}/appointment`);
     } catch (error: unknown) {
       showMessage(
         "Appointment unavailable",

@@ -10,13 +10,13 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 interface AppointmentPageProps {
-  params: Promise<{ doctorId: string }>;
+  params: Promise<{ id: string }>;
 }
 
 const AppointmentPage = async ({ params }: AppointmentPageProps) => {
-  const { doctorId } = await params;
+  const { id } = await params;
   const [doctorResult, session] = await Promise.all([
-    getPublicDoctorDetails(doctorId).catch(() => null),
+    getPublicDoctorDetails(id).catch(() => null),
     getUserSession(),
   ]);
 
