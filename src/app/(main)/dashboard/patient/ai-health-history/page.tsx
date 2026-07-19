@@ -1,7 +1,11 @@
-import AIHealthAssistant from "@/components/ai-health-assistant/AIHealthAssistant";
+import React from 'react';
 
-const AIHealthAssistantPage = () => {
-  return <AIHealthAssistant />;
+const PatientAiHealthHistory = () => {
+    return (
+        <div>
+            <h1>Patient AI Health History</h1>
+        </div>
+    );
 };
 
-export default AIHealthAssistantPage;
+export default PatientAiHealthHistory;
