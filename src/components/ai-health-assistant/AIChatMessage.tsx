@@ -38,6 +38,15 @@ const urgencyLabels: Record<AIHealthUrgency, string> = {
   emergency: "Emergency care advised",
 };
 
+const LEGACY_NAVIGATION_ROUTE_ALIASES: Record<string, string> = {
+  "/doctors": "/find-doctors",
+  "/dashboard/doctor/appointments": "/dashboard/doctor/patients-appointments",
+};
+
+const getSafeNavigationHref = (href: string): string => {
+  return LEGACY_NAVIGATION_ROUTE_ALIASES[href] || href;
+};
+
 const AIChatMessage = ({
   message,
   isBusy = false,
@@ -171,7 +180,7 @@ const AIChatMessage = ({
                   {assistant.navigationActions.map((action) => (
                     <Link
                       key={`${action.href}-${action.label}`}
-                      href={action.href}
+                      href={getSafeNavigationHref(action.href)}
                       title={action.reason}
                       className="inline-flex min-h-9 items-center gap-2 rounded-full border border-[#C5B3D3] bg-white px-3 py-1.5 text-xs font-black text-[#614E70] transition hover:bg-[#FFE2E2] dark:border-[#745D83] dark:bg-[#2A2233] dark:text-[#F5CBCB] dark:hover:bg-[#41354A]"
                     >
