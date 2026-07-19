@@ -21,6 +21,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 import AccessStateCard from "./AccessStateCard";
 import AIChatMessage from "./AIChatMessage";
+import AIConversationSidebar from "./AIConversationSidebar";
 import AIHealthSummaryCard from "./AIHealthSummaryCard";
 import {
   checkAIHealthAccess,
@@ -37,7 +38,6 @@ import type {
   AIHealthConversation,
   AIHealthHistory,
 } from "./types";
-import AIConversationSidebar from "./AIConversationSidebar";
 
 const ACTIVE_CHAT_STORAGE_KEY = "sebasathi-ai-active-chat";
 
@@ -88,7 +88,7 @@ const AIHealthAssistant = () => {
   const [savedHistory, setSavedHistory] = useState<AIHealthHistory | null>(
     null,
   );
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const chatScrollRef = useRef<HTMLDivElement | null>(null);
 
   const messages = useMemo<AIHealthChatMessage[]>(
     () => [welcomeMessage, ...(activeConversation?.messages || [])],
@@ -266,8 +266,19 @@ const AIHealthAssistant = () => {
   }, []);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isSending]);
+    const scrollContainer = chatScrollRef.current;
+
+    if (!scrollContainer) return;
+
+    const frameId = window.requestAnimationFrame(() => {
+      scrollContainer.scrollTo({
+        top: scrollContainer.scrollHeight,
+        behavior: isSending ? "smooth" : "auto",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [messages, isSending, activeConversation?.id]);
 
   const sendMessage = async (preset?: string) => {
     if (
@@ -425,10 +436,10 @@ const AIHealthAssistant = () => {
   );
 
   return (
-    <main className="min-h-screen bg-[#FFF9F9] px-3 py-4 dark:bg-[#211B27] sm:px-5 sm:py-6 lg:px-6">
-      <div className="mx-auto w-full max-w-7xl space-y-4 sm:space-y-5">
-        <header className="overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233]">
-          <div className="p-5 sm:p-6">
+    <main className="h-[calc(100dvh-4rem)] min-h-0 overflow-hidden bg-[#FFF9F9] px-3 py-3 dark:bg-[#211B27] sm:h-[calc(100dvh-4.5rem)] sm:px-5 sm:py-4 lg:px-6">
+      <div className="mx-auto flex h-full w-full max-w-7xl min-h-0 flex-col gap-3 sm:gap-4">
+        <header className="shrink-0 overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233]">
+          <div className="p-4 sm:p-5">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#FBEFEF] px-3 py-1.5 text-xs font-black uppercase tracking-wide text-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]">
@@ -441,10 +452,10 @@ const AIHealthAssistant = () => {
                 </span>
               </div>
 
-              <h1 className="mt-3 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+              <h1 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-3xl">
                 SebaSathi AI Health Assistant
               </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500 dark:text-[#A997AE]">
+              <p className="mt-1.5 max-w-3xl text-sm leading-6 text-slate-500 dark:text-[#A997AE]">
                 Describe symptoms in Bangla, Banglish or English. Chats are
                 automatically stored in All History for your active account.
               </p>
@@ -459,14 +470,16 @@ const AIHealthAssistant = () => {
         </header>
 
         {accessState === "loading" ? (
-          <div className="flex min-h-[420px] items-center justify-center rounded-3xl border border-[#F5CBCB] bg-white dark:border-[#41354A] dark:bg-[#2A2233]">
+          <div className="flex min-h-0 flex-1 items-center justify-center rounded-3xl border border-[#F5CBCB] bg-white dark:border-[#41354A] dark:bg-[#2A2233]">
             <LuLoaderCircle className="size-10 animate-spin text-[#745D83] dark:text-[#F5CBCB]" />
           </div>
         ) : accessState !== "allowed" ? (
-          <AccessStateCard state={accessState} message={accessMessage} />
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <AccessStateCard state={accessState} message={accessMessage} />
+          </div>
         ) : (
-          <div className="grid min-w-0 gap-4 lg:grid-cols-[270px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)_310px]">
-            <div className="lg:hidden">
+          <div className="grid min-h-0 min-w-0 flex-1 gap-3 overflow-hidden lg:grid-cols-[270px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)_310px]">
+            <div className="shrink-0 lg:hidden">
               <button
                 type="button"
                 onClick={() => setHistoryOpen((current) => !current)}
@@ -490,7 +503,7 @@ const AIHealthAssistant = () => {
               onDelete={(conversation) => void deleteConversation(conversation)}
             />
 
-            <section className="flex min-h-[680px] min-w-0 flex-col overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233] lg:min-h-[calc(100vh-220px)]">
+            <section className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233]">
               <div className="flex min-w-0 flex-wrap items-center justify-between gap-3 border-b border-[#F5CBCB] px-4 py-3.5 dark:border-[#41354A] sm:px-5">
                 <div className="flex min-w-0 items-center gap-3">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[#745D83] text-white dark:bg-[#C5B3D3] dark:text-[#211B27]">
@@ -513,7 +526,10 @@ const AIHealthAssistant = () => {
                 </span>
               </div>
 
-              <div className="flex-1 space-y-3 overflow-y-auto overflow-x-hidden bg-slate-50/45 p-3 sm:p-4 dark:bg-[#211B27]/35">
+              <div
+                ref={chatScrollRef}
+                className="min-h-0 flex-1 space-y-3 overflow-y-auto overflow-x-hidden overscroll-contain scroll-smooth bg-slate-50/45 p-3 sm:p-4 dark:bg-[#211B27]/35"
+              >
                 {isLoadingChats ? (
                   <div className="flex min-h-64 items-center justify-center">
                     <LuLoaderCircle className="size-8 animate-spin text-[#745D83]" />
@@ -522,6 +538,23 @@ const AIHealthAssistant = () => {
                   messages.map((message) => (
                     <AIChatMessage key={message.id} message={message} />
                   ))
+                )}
+
+                {(savedHistory ||
+                  (activeConversation?.summaryReport &&
+                    activeConversation.summaryHistoryId)) && (
+                  <div className="xl:hidden">
+                    <AIHealthSummaryCard
+                      report={
+                        savedHistory?.report ||
+                        activeConversation!.summaryReport!
+                      }
+                      historyId={
+                        savedHistory?.id ||
+                        activeConversation!.summaryHistoryId!
+                      }
+                    />
+                  </div>
                 )}
 
                 {isSending && (
@@ -535,7 +568,6 @@ const AIHealthAssistant = () => {
                     </div>
                   </div>
                 )}
-                <div ref={chatEndRef} />
               </div>
 
               {!hasUserMessage && (
@@ -600,7 +632,7 @@ const AIHealthAssistant = () => {
               </div>
             </section>
 
-            <aside className="min-w-0 lg:col-start-2 xl:col-start-3 xl:row-start-1">
+            <aside className="hidden h-full min-h-0 min-w-0 overflow-y-auto overscroll-contain xl:col-start-3 xl:row-start-1 xl:block">
               {savedHistory ||
               (activeConversation?.summaryReport &&
                 activeConversation.summaryHistoryId) ? (

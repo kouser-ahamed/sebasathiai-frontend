@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import {
   LuClock3,
   LuHistory,
@@ -47,11 +49,26 @@ const AIConversationSidebar = ({
   onSelect,
   onDelete,
 }: AIConversationSidebarProps) => {
+  const historyListRef = useRef<HTMLDivElement | null>(null);
+  const newestConversationId = conversations[0]?.id || "";
+  const newestConversationTime = conversations[0]?.lastMessageAt || "";
+
+  useEffect(() => {
+    const scrollContainer = historyListRef.current;
+
+    if (!scrollContainer) return;
+
+    scrollContainer.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [newestConversationId, newestConversationTime]);
+
   return (
     <aside
-      className={`${isOpen ? "block" : "hidden"} min-w-0 overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233] lg:block`}
+      className={`${isOpen ? "flex" : "hidden"} fixed inset-x-3 bottom-3 top-20 z-50 min-h-0 min-w-0 flex-col overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-2xl dark:border-[#41354A] dark:bg-[#2A2233] lg:static lg:flex lg:h-full lg:shadow-sm`}
     >
-      <div className="flex items-center justify-between border-b border-[#F5CBCB] p-4 dark:border-[#41354A]">
+      <div className="shrink-0 flex items-center justify-between border-b border-[#F5CBCB] p-4 dark:border-[#41354A]">
         <div className="flex items-center gap-2">
           <span className="flex size-9 items-center justify-center rounded-xl bg-[#FBEFEF] text-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]">
             <LuHistory className="size-4" />
@@ -76,7 +93,7 @@ const AIConversationSidebar = ({
         </button>
       </div>
 
-      <div className="p-3">
+      <div className="shrink-0 p-3">
         <button
           type="button"
           onClick={onNewChat}
@@ -88,7 +105,10 @@ const AIConversationSidebar = ({
         </button>
       </div>
 
-      <div className="max-h-[520px] space-y-2 overflow-y-auto px-3 pb-3 lg:max-h-[760px]">
+      <div
+        ref={historyListRef}
+        className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain scroll-smooth px-3 pb-3"
+      >
         {conversations.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-[#C5B3D3] p-5 text-center dark:border-[#5D4C69]">
             <LuMessageCircleHeart className="mx-auto size-7 text-[#745D83] dark:text-[#F5CBCB]" />
