@@ -1,11 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  LuLockKeyhole,
-  LuShieldAlert,
-  LuStethoscope,
-} from "react-icons/lu";
+import { LuLockKeyhole, LuShieldAlert, LuStethoscope } from "react-icons/lu";
 
 import type { AIHealthAccessState } from "./types";
 
@@ -14,10 +10,7 @@ interface AccessStateCardProps {
   message: string;
 }
 
-const AccessStateCard = ({
-  state,
-  message,
-}: AccessStateCardProps) => {
+const AccessStateCard = ({ state, message }: AccessStateCardProps) => {
   const Icon =
     state === "guest"
       ? LuLockKeyhole

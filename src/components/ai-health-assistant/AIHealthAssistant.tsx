@@ -8,11 +8,9 @@ import {
   LuBot,
   LuCheck,
   LuClipboardPlus,
-  LuHistory,
   LuLoaderCircle,
   LuMenu,
   LuMessageCircleHeart,
-  LuPlus,
   LuSend,
   LuShieldCheck,
   LuSparkles,
@@ -23,7 +21,6 @@ import { toast, ToastContainer } from "react-toastify";
 
 import AccessStateCard from "./AccessStateCard";
 import AIChatMessage from "./AIChatMessage";
-import AIConversationSidebar from "./AIConversationSidebar";
 import AIHealthSummaryCard from "./AIHealthSummaryCard";
 import {
   checkAIHealthAccess,
@@ -40,6 +37,7 @@ import type {
   AIHealthConversation,
   AIHealthHistory,
 } from "./types";
+import AIConversationSidebar from "./AIConversationSidebar";
 
 const ACTIVE_CHAT_STORAGE_KEY = "sebasathi-ai-active-chat";
 
@@ -48,7 +46,7 @@ const welcomeMessage: AIHealthChatMessage = {
   role: "assistant",
   isWelcome: true,
   content:
-    "Hello! Tell me your symptoms, when they started, severity, and age range. I will keep the guidance concise and suggest a suitable doctor category.",
+    "Hello! Tell me your symptoms, when they started, how severe they feel, and your age range. I will explain the situation clearly, suggest a suitable doctor category, and share safe next steps.",
 };
 
 const quickPrompts = [
@@ -410,43 +408,27 @@ const AIHealthAssistant = () => {
     }
   };
 
-  const ActionButtons = ({ compact = false }: { compact?: boolean }) => (
-    <div className={`grid gap-2 ${compact ? "grid-cols-2" : "sm:grid-cols-2"}`}>
-      <button
-        type="button"
-        onClick={() => void createNewChat()}
-        disabled={isCreatingChat || isSending || isSummarizing}
-        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#C5B3D3] px-3 text-xs font-black text-[#614E70] transition hover:bg-[#FBEFEF] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#745D83] dark:text-[#F5CBCB] dark:hover:bg-[#352B3D] sm:text-sm"
-      >
-        {isCreatingChat ? (
-          <LuLoaderCircle className="size-4 animate-spin" />
-        ) : (
-          <LuPlus className="size-4" />
-        )}
-        New Chat
-      </button>
-
-      <button
-        type="button"
-        onClick={() => void createSummary()}
-        disabled={!hasUserMessage || isSending || isSummarizing}
-        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#745D83] px-3 text-xs font-black text-white transition hover:bg-[#614E70] disabled:cursor-not-allowed disabled:opacity-45 dark:bg-[#C5B3D3] dark:text-[#211B27] sm:text-sm"
-      >
-        {isSummarizing ? (
-          <LuLoaderCircle className="size-4 animate-spin" />
-        ) : (
-          <LuClipboardPlus className="size-4" />
-        )}
-        Summary
-      </button>
-    </div>
+  const SummaryButton = () => (
+    <button
+      type="button"
+      onClick={() => void createSummary()}
+      disabled={!hasUserMessage || isSending || isSummarizing}
+      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#745D83] px-4 text-xs font-black text-white transition hover:bg-[#614E70] disabled:cursor-not-allowed disabled:opacity-45 dark:bg-[#C5B3D3] dark:text-[#211B27] dark:hover:bg-[#F5CBCB] sm:text-sm"
+    >
+      {isSummarizing ? (
+        <LuLoaderCircle className="size-4 animate-spin" />
+      ) : (
+        <LuClipboardPlus className="size-4" />
+      )}
+      Summary & Save Your Health History
+    </button>
   );
 
   return (
-    <main className="min-h-screen bg-[#FFF9F9] px-3 py-4 dark:bg-[#211B27] sm:px-5 sm:py-6 lg:px-8">
-      <div className="mx-auto max-w-[1600px] space-y-4 sm:space-y-5">
+    <main className="min-h-screen bg-[#FFF9F9] px-3 py-4 dark:bg-[#211B27] sm:px-5 sm:py-6 lg:px-6">
+      <div className="mx-auto w-full max-w-7xl space-y-4 sm:space-y-5">
         <header className="overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233]">
-          <div className="grid gap-4 p-5 lg:grid-cols-[1fr_auto] lg:items-center sm:p-6">
+          <div className="p-5 sm:p-6">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#FBEFEF] px-3 py-1.5 text-xs font-black uppercase tracking-wide text-[#745D83] dark:bg-[#352B3D] dark:text-[#F5CBCB]">
@@ -467,12 +449,6 @@ const AIHealthAssistant = () => {
                 automatically stored in All History for your active account.
               </p>
             </div>
-
-            {accessState === "allowed" && (
-              <div className="min-w-[260px]">
-                <ActionButtons />
-              </div>
-            )}
           </div>
 
           <div className="border-t border-[#F5CBCB] bg-[#FBEFEF]/65 px-5 py-2.5 text-xs font-semibold leading-5 text-[#614E70] dark:border-[#41354A] dark:bg-[#352B3D]/70 dark:text-[#CDBFD0]">
@@ -489,7 +465,7 @@ const AIHealthAssistant = () => {
         ) : accessState !== "allowed" ? (
           <AccessStateCard state={accessState} message={accessMessage} />
         ) : (
-          <div className="grid min-w-0 gap-4 lg:grid-cols-[280px_minmax(0,1fr)] 2xl:grid-cols-[280px_minmax(0,1fr)_380px]">
+          <div className="grid min-w-0 gap-4 lg:grid-cols-[270px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)_310px]">
             <div className="lg:hidden">
               <button
                 type="button"
@@ -514,7 +490,7 @@ const AIHealthAssistant = () => {
               onDelete={(conversation) => void deleteConversation(conversation)}
             />
 
-            <section className="flex min-h-[640px] min-w-0 flex-col overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233] sm:min-h-[720px]">
+            <section className="flex min-h-[680px] min-w-0 flex-col overflow-hidden rounded-3xl border border-[#F5CBCB] bg-white shadow-sm dark:border-[#41354A] dark:bg-[#2A2233] lg:min-h-[calc(100vh-220px)]">
               <div className="flex min-w-0 flex-wrap items-center justify-between gap-3 border-b border-[#F5CBCB] px-4 py-3.5 dark:border-[#41354A] sm:px-5">
                 <div className="flex min-w-0 items-center gap-3">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[#745D83] text-white dark:bg-[#C5B3D3] dark:text-[#211B27]">
@@ -584,7 +560,7 @@ const AIHealthAssistant = () => {
 
               <div className="border-t border-[#F5CBCB] p-3 dark:border-[#41354A] sm:p-4">
                 <div className="mb-3">
-                  <ActionButtons compact />
+                  <SummaryButton />
                 </div>
 
                 <div className="flex min-w-0 items-end gap-2 rounded-2xl border border-[#E4D5E7] bg-white p-2 transition focus-within:border-[#745D83] focus-within:ring-4 focus-within:ring-[#745D83]/10 dark:border-[#41354A] dark:bg-[#352B3D]">
@@ -624,7 +600,7 @@ const AIHealthAssistant = () => {
               </div>
             </section>
 
-            <aside className="min-w-0 lg:col-start-2 2xl:col-start-3 2xl:row-start-1">
+            <aside className="min-w-0 lg:col-start-2 xl:col-start-3 xl:row-start-1">
               {savedHistory ||
               (activeConversation?.summaryReport &&
                 activeConversation.summaryHistoryId) ? (

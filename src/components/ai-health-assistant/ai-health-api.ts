@@ -13,8 +13,7 @@ import type {
 
 const getApiBaseUrl = (): string => {
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL;
+    process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL;
 
   if (!baseUrl) {
     throw new Error(
@@ -25,9 +24,7 @@ const getApiBaseUrl = (): string => {
   return baseUrl.replace(/\/+$/, "");
 };
 
-const readErrorMessage = async (
-  response: Response,
-): Promise<string> => {
+const readErrorMessage = async (response: Response): Promise<string> => {
   try {
     const data = (await response.json()) as {
       message?: unknown;
@@ -81,46 +78,44 @@ const authenticatedRequest = async <T>(
   return (await response.json()) as T;
 };
 
-export const checkAIHealthAccess = async (): Promise<
-  AIHealthAccessResponse | null
-> => {
-  const token = await getAccessToken();
+export const checkAIHealthAccess =
+  async (): Promise<AIHealthAccessResponse | null> => {
+    const token = await getAccessToken();
 
-  if (!token) {
-    return null;
-  }
+    if (!token) {
+      return null;
+    }
 
-  const response = await fetch(
-    `${getApiBaseUrl()}/api/v1/ai-health/access`,
-    {
+    const response = await fetch(`${getApiBaseUrl()}/api/v1/ai-health/access`, {
       cache: "no-store",
       headers: {
         accept: "application/json",
         authorization: `Bearer ${token}`,
       },
-    },
-  );
+    });
 
-  if (!response.ok) {
-    throw new Error(await readErrorMessage(response));
-  }
+    if (!response.ok) {
+      throw new Error(await readErrorMessage(response));
+    }
 
-  return (await response.json()) as AIHealthAccessResponse;
-};
+    return (await response.json()) as AIHealthAccessResponse;
+  };
 
-export const fetchAIHealthConversations = (): Promise<AIHealthConversationListResponse> =>
-  authenticatedRequest<AIHealthConversationListResponse>(
-    "/api/v1/ai-health/conversations?limit=100",
-  );
+export const fetchAIHealthConversations =
+  (): Promise<AIHealthConversationListResponse> =>
+    authenticatedRequest<AIHealthConversationListResponse>(
+      "/api/v1/ai-health/conversations?limit=100",
+    );
 
-export const createAIHealthConversation = (): Promise<AIHealthConversationResponse> =>
-  authenticatedRequest<AIHealthConversationResponse>(
-    "/api/v1/ai-health/conversations",
-    {
-      method: "POST",
-      body: JSON.stringify({}),
-    },
-  );
+export const createAIHealthConversation =
+  (): Promise<AIHealthConversationResponse> =>
+    authenticatedRequest<AIHealthConversationResponse>(
+      "/api/v1/ai-health/conversations",
+      {
+        method: "POST",
+        body: JSON.stringify({}),
+      },
+    );
 
 export const fetchAIHealthConversation = (
   conversationId: string,
@@ -144,13 +139,10 @@ export const sendPersistentAIHealthMessage = (
 export const generateAIHealthSummary = (
   conversationId: string,
 ): Promise<AIHealthSummaryResponse> =>
-  authenticatedRequest<AIHealthSummaryResponse>(
-    "/api/v1/ai-health/summary",
-    {
-      method: "POST",
-      body: JSON.stringify({ conversationId }),
-    },
-  );
+  authenticatedRequest<AIHealthSummaryResponse>("/api/v1/ai-health/summary", {
+    method: "POST",
+    body: JSON.stringify({ conversationId }),
+  });
 
 export const deleteAIHealthConversation = (
   conversationId: string,

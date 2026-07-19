@@ -1,10 +1,6 @@
 export type AIHealthRole = "user" | "assistant";
 
-export type AIHealthUrgency =
-  | "routine"
-  | "soon"
-  | "urgent"
-  | "emergency";
+export type AIHealthUrgency = "routine" | "soon" | "urgent" | "emergency";
 
 export interface AIHealthAPIMessage {
   role: AIHealthRole;
