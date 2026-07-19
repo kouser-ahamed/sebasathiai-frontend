@@ -392,12 +392,6 @@ const AIHealthAssistant = () => {
   const deleteConversation = async (conversation: AIHealthConversation) => {
     if (isSending || isSummarizing || isCreatingChat) return;
 
-    const confirmed = window.confirm(
-      `Delete “${conversation.title}”? This removes the saved chat permanently.`,
-    );
-
-    if (!confirmed) return;
-
     try {
       const response = await deleteAIHealthConversation(conversation.id);
       const remaining = conversations.filter(
@@ -418,22 +412,6 @@ const AIHealthAssistant = () => {
       showError(getErrorMessage(error, "The chat could not be deleted."));
     }
   };
-
-  const SummaryButton = () => (
-    <button
-      type="button"
-      onClick={() => void createSummary()}
-      disabled={!hasUserMessage || isSending || isSummarizing}
-      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#745D83] px-4 text-xs font-black text-white transition hover:bg-[#614E70] disabled:cursor-not-allowed disabled:opacity-45 dark:bg-[#C5B3D3] dark:text-[#211B27] dark:hover:bg-[#F5CBCB] sm:text-sm"
-    >
-      {isSummarizing ? (
-        <LuLoaderCircle className="size-4 animate-spin" />
-      ) : (
-        <LuClipboardPlus className="size-4" />
-      )}
-      Summary & Save Your Health History
-    </button>
-  );
 
   return (
     <main className="h-[calc(100dvh-4rem)] min-h-0 overflow-hidden bg-[#FFF9F9] px-3 py-3 dark:bg-[#211B27] sm:h-[calc(100dvh-4.5rem)] sm:px-5 sm:py-4 lg:px-6">
@@ -592,7 +570,19 @@ const AIHealthAssistant = () => {
 
               <div className="border-t border-[#F5CBCB] p-3 dark:border-[#41354A] sm:p-4">
                 <div className="mb-3">
-                  <SummaryButton />
+                  <button
+                    type="button"
+                    onClick={() => void createSummary()}
+                    disabled={!hasUserMessage || isSending || isSummarizing}
+                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#745D83] px-4 text-xs font-black text-white transition hover:bg-[#614E70] disabled:cursor-not-allowed disabled:opacity-45 dark:bg-[#C5B3D3] dark:text-[#211B27] dark:hover:bg-[#F5CBCB] sm:text-sm"
+                  >
+                    {isSummarizing ? (
+                      <LuLoaderCircle className="size-4 animate-spin" />
+                    ) : (
+                      <LuClipboardPlus className="size-4" />
+                    )}
+                    Summary & Save Your Health History
+                  </button>
                 </div>
 
                 <div className="flex min-w-0 items-end gap-2 rounded-2xl border border-[#E4D5E7] bg-white p-2 transition focus-within:border-[#745D83] focus-within:ring-4 focus-within:ring-[#745D83]/10 dark:border-[#41354A] dark:bg-[#352B3D]">
