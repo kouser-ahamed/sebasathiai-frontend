@@ -1,11 +1,7 @@
-import React from 'react';
+import PatientsManagement from "@/components/dashboard/admin/paitentsManagement/PatientsManagement";
 
 const UsersPage = () => {
-    return (
-        <div>
-            Users Page
-        </div>
-    );
+  return <PatientsManagement />;
 };
 
 export default UsersPage;
