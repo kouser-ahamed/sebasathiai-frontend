@@ -255,7 +255,7 @@ const AppointmentForm = ({ doctor, currentUser }: AppointmentFormProps) => {
         message={modal.message}
         onClose={() => {
           setModal((current) => ({ ...current, open: false }));
-          if (modal.success) router.push(`/doctors/${doctor.id}`);
+          if (modal.success) router.push("/dashboard/patient/appointments");
         }}
       />
     </main>
