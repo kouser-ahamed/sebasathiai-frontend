@@ -8,9 +8,12 @@ import {
   LuBot,
   LuCheck,
   LuClipboardPlus,
+  LuDatabase,
   LuLoaderCircle,
   LuMenu,
   LuMessageCircleHeart,
+  LuRadio,
+  LuRoute,
   LuSend,
   LuShieldCheck,
   LuSparkles,
@@ -30,7 +33,7 @@ import {
   fetchAIHealthConversation,
   fetchAIHealthConversations,
   generateAIHealthSummary,
-  sendPersistentAIHealthMessage,
+  streamPersistentAIHealthMessage,
 } from "./ai-health-api";
 import type {
   AIHealthAccessState,
@@ -82,6 +85,11 @@ const AIHealthAssistant = () => {
   const [input, setInput] = useState("");
   const [isLoadingChats, setIsLoadingChats] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [streamingText, setStreamingText] = useState("");
+  const [assistantStatus, setAssistantStatus] = useState(
+    "Understanding your question...",
+  );
+  const [activeTools, setActiveTools] = useState<string[]>([]);
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [isCreatingChat, setIsCreatingChat] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -319,17 +327,54 @@ const AIHealthAssistant = () => {
     );
     setInput("");
     setSavedHistory(null);
+    setStreamingText("");
+    setAssistantStatus(
+      "Understanding your question and previous conversation...",
+    );
+    setActiveTools([]);
     setIsSending(true);
 
     try {
-      const response = await sendPersistentAIHealthMessage(
+      const response = await streamPersistentAIHealthMessage(
         activeConversation.id,
         content,
+        {
+          onStatus: (event) => {
+            setAssistantStatus(event.message);
+
+            if (event.toolsUsed.length > 0) {
+              setActiveTools(event.toolsUsed);
+            }
+          },
+          onDelta: (delta) => {
+            setStreamingText((current) => `${current}${delta}`);
+          },
+        },
       );
 
       if (response.conversation) {
         setActiveConversation(response.conversation);
         putConversationFirst(response.conversation);
+      } else {
+        setActiveConversation((current) =>
+          current
+            ? {
+                ...current,
+                messages: [
+                  ...current.messages.filter(
+                    (message) => message.id !== optimisticUserMessage.id,
+                  ),
+                  response.userMessage,
+                  response.assistantMessage,
+                ],
+                messageCount: current.messageCount + 1,
+                updatedAt:
+                  response.assistantMessage.createdAt || current.updatedAt,
+                lastMessageAt:
+                  response.assistantMessage.createdAt || current.lastMessageAt,
+              }
+            : current,
+        );
       }
     } catch (error: unknown) {
       setActiveConversation((current) =>
@@ -345,6 +390,9 @@ const AIHealthAssistant = () => {
       );
       showError(getErrorMessage(error, "The AI assistant could not respond."));
     } finally {
+      setStreamingText("");
+      setAssistantStatus("Understanding your question...");
+      setActiveTools([]);
       setIsSending(false);
     }
   };
@@ -427,6 +475,18 @@ const AIHealthAssistant = () => {
                 <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-black text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">
                   <LuShieldCheck className="size-4" />
                   General guidance only
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-black text-blue-700 dark:bg-blue-950/30 dark:text-blue-300">
+                  <LuDatabase className="size-4" />
+                  Conversation memory
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-violet-50 px-3 py-1.5 text-xs font-black text-violet-700 dark:bg-violet-950/30 dark:text-violet-300">
+                  <LuRoute className="size-4" />
+                  App navigation
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-3 py-1.5 text-xs font-black text-cyan-700 dark:bg-cyan-950/30 dark:text-cyan-300">
+                  <LuRadio className="size-4" />
+                  Streaming responses
                 </span>
               </div>
 
@@ -514,8 +574,40 @@ const AIHealthAssistant = () => {
                   </div>
                 ) : (
                   messages.map((message) => (
-                    <AIChatMessage key={message.id} message={message} />
+                    <AIChatMessage
+                      key={message.id}
+                      message={message}
+                      isBusy={isSending || isSummarizing}
+                      onSuggestedPrompt={(prompt) => void sendMessage(prompt)}
+                    />
                   ))
+                )}
+
+                {streamingText && (
+                  <AIChatMessage
+                    message={{
+                      id: "streaming-assistant",
+                      role: "assistant",
+                      content: streamingText,
+                      isStreaming: true,
+                    }}
+                    isBusy
+                  />
+                )}
+
+                {isSending && streamingText && (
+                  <div className="ml-10 flex min-w-0 flex-wrap items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-[#A997AE] sm:ml-12">
+                    <LuLoaderCircle className="size-3.5 animate-spin" />
+                    <span>{assistantStatus}</span>
+                    {activeTools.map((tool) => (
+                      <span
+                        key={tool}
+                        className="rounded-full bg-white px-2 py-0.5 dark:bg-[#2A2233]"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
                 )}
 
                 {(savedHistory ||
@@ -535,14 +627,28 @@ const AIHealthAssistant = () => {
                   </div>
                 )}
 
-                {isSending && (
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 items-center justify-center rounded-xl bg-[#745D83] text-white dark:bg-[#C5B3D3] dark:text-[#211B27]">
+                {isSending && !streamingText && (
+                  <div className="flex items-start gap-2.5">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-[#745D83] text-white dark:bg-[#C5B3D3] dark:text-[#211B27]">
                       <LuBot className="size-4" />
                     </span>
-                    <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-[#F5CBCB] bg-white px-3 py-2.5 text-sm font-bold text-[#745D83] dark:border-[#41354A] dark:bg-[#2A2233] dark:text-[#F5CBCB]">
-                      <LuLoaderCircle className="size-4 animate-spin" />
-                      Reviewing symptoms...
+                    <div className="min-w-0 rounded-2xl rounded-bl-md border border-[#F5CBCB] bg-white px-3 py-2.5 text-sm font-bold text-[#745D83] dark:border-[#41354A] dark:bg-[#2A2233] dark:text-[#F5CBCB]">
+                      <div className="flex items-center gap-2">
+                        <LuLoaderCircle className="size-4 shrink-0 animate-spin" />
+                        <span className="break-words">{assistantStatus}</span>
+                      </div>
+                      {activeTools.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {activeTools.map((tool) => (
+                            <span
+                              key={tool}
+                              className="rounded-full bg-[#FBEFEF] px-2 py-0.5 text-[10px] text-[#614E70] dark:bg-[#352B3D] dark:text-[#F5CBCB]"
+                            >
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

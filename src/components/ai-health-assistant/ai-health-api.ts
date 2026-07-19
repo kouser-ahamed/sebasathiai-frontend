@@ -8,6 +8,8 @@ import type {
   AIHealthConversationResponse,
   AIHealthDeleteConversationResponse,
   AIHealthPersistentChatResponse,
+  AIHealthStreamEvent,
+  AIHealthStreamHandlers,
   AIHealthSummaryResponse,
 } from "./types";
 
@@ -135,6 +137,99 @@ export const sendPersistentAIHealthMessage = (
       body: JSON.stringify({ message }),
     },
   );
+
+export const streamPersistentAIHealthMessage = async (
+  conversationId: string,
+  message: string,
+  handlers: AIHealthStreamHandlers = {},
+): Promise<AIHealthPersistentChatResponse> => {
+  const token = await getAccessToken();
+
+  if (!token) {
+    throw new Error("AUTHENTICATION_REQUIRED");
+  }
+
+  const response = await fetch(
+    `${getApiBaseUrl()}/api/v1/ai-health/conversations/${encodeURIComponent(conversationId)}/messages/stream`,
+    {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        accept: "application/x-ndjson",
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ message }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(await readErrorMessage(response));
+  }
+
+  if (!response.body) {
+    throw new Error("The streaming response is unavailable.");
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let result: AIHealthPersistentChatResponse | null = null;
+
+  const processLine = (line: string) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) return;
+
+    const event = JSON.parse(trimmed) as AIHealthStreamEvent;
+
+    if (event.type === "status") {
+      handlers.onStatus?.(event);
+      return;
+    }
+
+    if (event.type === "delta") {
+      handlers.onDelta?.(event.delta);
+      return;
+    }
+
+    if (event.type === "error") {
+      throw new Error(event.message);
+    }
+
+    result = event.data;
+  };
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+
+      for (const line of lines) {
+        processLine(line);
+      }
+    }
+
+    buffer += decoder.decode();
+
+    if (buffer.trim()) {
+      processLine(buffer);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  if (!result) {
+    throw new Error("The streamed response ended before the chat was saved.");
+  }
+
+  return result;
+};
 
 export const generateAIHealthSummary = (
   conversationId: string,

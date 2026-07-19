@@ -2,9 +2,22 @@ export type AIHealthRole = "user" | "assistant";
 
 export type AIHealthUrgency = "routine" | "soon" | "urgent" | "emergency";
 
+export type AIHealthStreamStage =
+  | "thinking"
+  | "tool"
+  | "answering"
+  | "structuring"
+  | "saving";
+
 export interface AIHealthAPIMessage {
   role: AIHealthRole;
   content: string;
+}
+
+export interface AIHealthNavigationAction {
+  label: string;
+  href: string;
+  reason: string;
 }
 
 export interface AIHealthAssistantData {
@@ -14,6 +27,11 @@ export interface AIHealthAssistantData {
   recommendedActions: string[];
   warningSigns: string[];
   followUpQuestions: string[];
+  suggestedPrompts: string[];
+  navigationActions: AIHealthNavigationAction[];
+  decisionBasis: string;
+  toolsUsed: string[];
+  contextMemoryUsed: boolean;
   disclaimer: string;
 }
 
@@ -22,6 +40,7 @@ export interface AIHealthChatMessage extends AIHealthAPIMessage {
   assistant?: AIHealthAssistantData | null;
   createdAt?: string | null;
   isWelcome?: boolean;
+  isStreaming?: boolean;
 }
 
 export interface AIHealthAccessResponse {
@@ -123,6 +142,39 @@ export interface AIHealthDeleteConversationResponse {
   success: boolean;
   message: string;
   deletedConversationId: string;
+}
+
+export interface AIHealthStreamStatusEvent {
+  type: "status";
+  stage: AIHealthStreamStage;
+  message: string;
+  toolsUsed: string[];
+}
+
+export interface AIHealthStreamDeltaEvent {
+  type: "delta";
+  delta: string;
+}
+
+export interface AIHealthStreamResultEvent {
+  type: "result";
+  data: AIHealthPersistentChatResponse;
+}
+
+export interface AIHealthStreamErrorEvent {
+  type: "error";
+  message: string;
+}
+
+export type AIHealthStreamEvent =
+  | AIHealthStreamStatusEvent
+  | AIHealthStreamDeltaEvent
+  | AIHealthStreamResultEvent
+  | AIHealthStreamErrorEvent;
+
+export interface AIHealthStreamHandlers {
+  onStatus?: (event: AIHealthStreamStatusEvent) => void;
+  onDelta?: (delta: string) => void;
 }
 
 export type AIHealthAccessState =
