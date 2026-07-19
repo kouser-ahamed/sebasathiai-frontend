@@ -10,10 +10,7 @@ import {
   LuStethoscope,
 } from "react-icons/lu";
 
-import type {
-  AIHealthSummaryReport,
-  AIHealthUrgency,
-} from "./types";
+import type { AIHealthSummaryReport, AIHealthUrgency } from "./types";
 
 interface AIHealthSummaryCardProps {
   report: AIHealthSummaryReport;
@@ -21,9 +18,11 @@ interface AIHealthSummaryCardProps {
 }
 
 const urgencyClasses: Record<AIHealthUrgency, string> = {
-  routine: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300",
+  routine:
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300",
   soon: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300",
-  urgent: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
+  urgent:
+    "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
   emergency: "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300",
 };
 
@@ -85,28 +84,52 @@ const AIHealthSummaryCard = ({
         {report.conciseSummary}
       </p>
 
-      <div className="mt-5 space-y-5">
-        <ReportList title="Chief concerns" items={report.chiefConcerns} icon={LuClipboardList} />
-        <ReportList title="Reported symptoms" items={report.symptoms} icon={LuActivity} />
+      <div className="mt-5 space-y-4">
+        <ReportList
+          title="Chief concerns"
+          items={report.chiefConcerns}
+          icon={LuClipboardList}
+        />
+        <ReportList
+          title="Reported symptoms"
+          items={report.symptoms}
+          icon={LuActivity}
+        />
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
           <div className="min-w-0 rounded-2xl border border-[#F5CBCB] p-3 dark:border-[#41354A]">
-            <p className="text-xs font-black uppercase tracking-wide text-slate-400">Duration & pattern</p>
+            <p className="text-xs font-black uppercase tracking-wide text-slate-400">
+              Duration & pattern
+            </p>
             <p className="mt-1 max-w-full break-words text-sm font-semibold leading-6 text-slate-700 [overflow-wrap:anywhere] dark:text-[#E7DDE8]">
               {report.durationAndPattern}
             </p>
           </div>
           <div className="min-w-0 rounded-2xl border border-[#F5CBCB] p-3 dark:border-[#41354A]">
-            <p className="text-xs font-black uppercase tracking-wide text-slate-400">Severity</p>
+            <p className="text-xs font-black uppercase tracking-wide text-slate-400">
+              Severity
+            </p>
             <p className="mt-1 max-w-full break-words text-sm font-semibold leading-6 text-slate-700 [overflow-wrap:anywhere] dark:text-[#E7DDE8]">
               {report.severity}
             </p>
           </div>
         </div>
 
-        <ReportList title="Suggested specialists" items={report.suggestedSpecialists} icon={LuStethoscope} />
-        <ReportList title="General self-care guidance" items={report.selfCareGuidance} icon={LuHeartPulse} />
-        <ReportList title="Questions for your doctor" items={report.questionsForDoctor} icon={LuBadgeCheck} />
+        <ReportList
+          title="Suggested specialists"
+          items={report.suggestedSpecialists}
+          icon={LuStethoscope}
+        />
+        <ReportList
+          title="General self-care guidance"
+          items={report.selfCareGuidance}
+          icon={LuHeartPulse}
+        />
+        <ReportList
+          title="Questions for your doctor"
+          items={report.questionsForDoctor}
+          icon={LuBadgeCheck}
+        />
 
         {report.redFlags.length > 0 && (
           <div className="rounded-2xl border border-red-200 bg-red-50 p-4 dark:border-red-900/60 dark:bg-red-950/25">
@@ -116,7 +139,10 @@ const AIHealthSummaryCard = ({
             </p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-red-700 dark:text-red-200">
               {report.redFlags.map((item) => (
-                <li key={item} className="min-w-0 break-words [overflow-wrap:anywhere]">
+                <li
+                  key={item}
+                  className="min-w-0 break-words [overflow-wrap:anywhere]"
+                >
                   • {item}
                 </li>
               ))}

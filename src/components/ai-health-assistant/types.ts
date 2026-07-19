@@ -23,7 +23,8 @@ export interface AIHealthAssistantData {
 
 export interface AIHealthChatMessage extends AIHealthAPIMessage {
   id: string;
-  assistant?: AIHealthAssistantData;
+  assistant?: AIHealthAssistantData | null;
+  createdAt?: string | null;
   isWelcome?: boolean;
 }
 
@@ -42,11 +43,41 @@ export interface AIHealthAccessResponse {
   message: string;
 }
 
-export interface AIHealthChatResponse {
+export interface AIHealthConversation {
+  id: string;
+  title: string;
+  userId: string;
+  userRole: "admin" | "doctor" | "patient";
+  userName: string;
+  userEmail: string;
+  userImage: string | null;
+  messages: AIHealthChatMessage[];
+  messageCount: number;
+  summaryHistoryId: string | null;
+  summaryReport: AIHealthSummaryReport | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  lastMessageAt: string | null;
+}
+
+export interface AIHealthConversationListResponse {
+  success: boolean;
+  conversations: AIHealthConversation[];
+}
+
+export interface AIHealthConversationResponse {
+  success: boolean;
+  message?: string;
+  conversation: AIHealthConversation;
+}
+
+export interface AIHealthPersistentChatResponse {
   success: boolean;
   provider: "groq";
   model: string;
-  assistant: AIHealthAssistantData;
+  userMessage: AIHealthChatMessage;
+  assistantMessage: AIHealthChatMessage;
+  conversation: AIHealthConversation | null;
 }
 
 export interface AIHealthSummaryReport {
@@ -67,6 +98,8 @@ export interface AIHealthSummaryReport {
 
 export interface AIHealthHistory {
   id: string;
+  conversationId: string | null;
+  conversationTitle: string | null;
   userId: string;
   userRole: "admin" | "doctor" | "patient";
   userName: string;
@@ -87,6 +120,13 @@ export interface AIHealthSummaryResponse {
   success: boolean;
   message: string;
   history: AIHealthHistory;
+  conversation: AIHealthConversation | null;
+}
+
+export interface AIHealthDeleteConversationResponse {
+  success: boolean;
+  message: string;
+  deletedConversationId: string;
 }
 
 export type AIHealthAccessState =

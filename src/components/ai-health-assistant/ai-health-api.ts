@@ -3,9 +3,11 @@
 import { getTokenClient } from "@/lib/getTokenClient";
 
 import type {
-  AIHealthAPIMessage,
   AIHealthAccessResponse,
-  AIHealthChatResponse,
+  AIHealthConversationListResponse,
+  AIHealthConversationResponse,
+  AIHealthDeleteConversationResponse,
+  AIHealthPersistentChatResponse,
   AIHealthSummaryResponse,
 } from "./types";
 
@@ -31,10 +33,7 @@ const readErrorMessage = async (
       message?: unknown;
     };
 
-    if (
-      typeof data.message === "string" &&
-      data.message.trim()
-    ) {
+    if (typeof data.message === "string" && data.message.trim()) {
       return data.message;
     }
   } catch {
@@ -109,24 +108,56 @@ export const checkAIHealthAccess = async (): Promise<
   return (await response.json()) as AIHealthAccessResponse;
 };
 
-export const sendAIHealthMessage = (
-  messages: AIHealthAPIMessage[],
-): Promise<AIHealthChatResponse> =>
-  authenticatedRequest<AIHealthChatResponse>(
-    "/api/v1/ai-health/chat",
+export const fetchAIHealthConversations = (): Promise<AIHealthConversationListResponse> =>
+  authenticatedRequest<AIHealthConversationListResponse>(
+    "/api/v1/ai-health/conversations?limit=100",
+  );
+
+export const createAIHealthConversation = (): Promise<AIHealthConversationResponse> =>
+  authenticatedRequest<AIHealthConversationResponse>(
+    "/api/v1/ai-health/conversations",
     {
       method: "POST",
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({}),
+    },
+  );
+
+export const fetchAIHealthConversation = (
+  conversationId: string,
+): Promise<AIHealthConversationResponse> =>
+  authenticatedRequest<AIHealthConversationResponse>(
+    `/api/v1/ai-health/conversations/${encodeURIComponent(conversationId)}`,
+  );
+
+export const sendPersistentAIHealthMessage = (
+  conversationId: string,
+  message: string,
+): Promise<AIHealthPersistentChatResponse> =>
+  authenticatedRequest<AIHealthPersistentChatResponse>(
+    `/api/v1/ai-health/conversations/${encodeURIComponent(conversationId)}/messages`,
+    {
+      method: "POST",
+      body: JSON.stringify({ message }),
     },
   );
 
 export const generateAIHealthSummary = (
-  messages: AIHealthAPIMessage[],
+  conversationId: string,
 ): Promise<AIHealthSummaryResponse> =>
   authenticatedRequest<AIHealthSummaryResponse>(
     "/api/v1/ai-health/summary",
     {
       method: "POST",
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({ conversationId }),
+    },
+  );
+
+export const deleteAIHealthConversation = (
+  conversationId: string,
+): Promise<AIHealthDeleteConversationResponse> =>
+  authenticatedRequest<AIHealthDeleteConversationResponse>(
+    `/api/v1/ai-health/conversations/${encodeURIComponent(conversationId)}`,
+    {
+      method: "DELETE",
     },
   );
