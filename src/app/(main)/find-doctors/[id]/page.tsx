@@ -12,15 +12,15 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 interface DoctorDetailsPageProps {
-  params: Promise<{ doctorId: string }>;
+  params: Promise<{ id: string }>;
 }
 
 const DoctorDetailsPage = async ({ params }: DoctorDetailsPageProps) => {
-  const { doctorId } = await params;
+  const { id } = await params;
 
   const [doctorResult, reviewsResult, session] = await Promise.all([
-    getPublicDoctorDetails(doctorId).catch(() => null),
-    getInitialDoctorReviews(doctorId).catch(() => null),
+    getPublicDoctorDetails(id).catch(() => null),
+    getInitialDoctorReviews(id).catch(() => null),
     getUserSession(),
   ]);
 
