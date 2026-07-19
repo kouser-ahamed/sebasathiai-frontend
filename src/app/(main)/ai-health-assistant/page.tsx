@@ -1,11 +1,11 @@
-import React from 'react';
+import AIHealthAssistant from "@/components/ai-health-assistant";
 
-const AIHealthAssistant = () => {
-    return (
-        <div>
-            AI Health Assistant
-        </div>
-    );
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const AIHealthAssistantPage = () => {
+  return <AIHealthAssistant />;
 };
 
-export default AIHealthAssistant;
+export default AIHealthAssistantPage;
