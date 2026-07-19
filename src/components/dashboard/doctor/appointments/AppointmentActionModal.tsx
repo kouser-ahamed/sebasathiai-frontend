@@ -5,9 +5,8 @@ import {
   useState,
 } from "react";
 import {
-  LuCheck,
   LuCalendarClock,
-  LuCircleCheck,
+  LuCheck,
   LuX,
 } from "react-icons/lu";
 
@@ -23,9 +22,11 @@ interface AppointmentActionModalProps {
   appointment: DoctorAppointment | null;
   isSubmitting: boolean;
   onClose: () => void;
+
   onOpenReschedule: (
     appointment: DoctorAppointment,
   ) => void;
+
   onSubmit: (
     status: Exclude<
       AppointmentStatus,
@@ -70,6 +71,9 @@ const AppointmentActionModal = ({
   const isApproved =
     appointment.status === "approved";
 
+  const isRejected =
+    appointment.status === "rejected";
+
   return (
     <ModalShell
       isOpen={isOpen}
@@ -101,16 +105,38 @@ const AppointmentActionModal = ({
               </p>
 
               <p className="mt-1 font-black text-slate-900 dark:text-white">
-                {appointment.appointmentDate} at {appointment.appointmentTime}
+                {
+                  appointment.appointmentDate
+                }{" "}
+                at{" "}
+                {
+                  appointment.appointmentTime
+                }
               </p>
             </div>
           </div>
         </div>
 
+        {isRejected &&
+          appointment.rejectionReason && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 dark:border-red-900/60 dark:bg-red-950/25">
+              <p className="text-xs font-black uppercase tracking-wide text-red-500">
+                Previous Rejection Message
+              </p>
+
+              <p className="mt-2 whitespace-pre-wrap text-sm font-semibold leading-6 text-red-700 dark:text-red-300">
+                {
+                  appointment.rejectionReason
+                }
+              </p>
+            </div>
+          )}
+
         {showRejectForm ? (
           <div className="space-y-4">
             <label className="block text-sm font-black text-slate-800 dark:text-white">
               Rejection Message
+
               <textarea
                 value={rejectionReason}
                 onChange={(event) =>
@@ -159,36 +185,28 @@ const AppointmentActionModal = ({
           </div>
         ) : (
           <div className="space-y-3">
-            {isPending && (
+            {(isPending || isRejected) && (
               <button
                 type="button"
                 disabled={isSubmitting}
                 onClick={() =>
-                  void onSubmit("approved")
+                  void onSubmit(
+                    "approved",
+                  )
                 }
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 text-sm font-black text-white transition hover:bg-blue-700 disabled:opacity-50"
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 text-sm font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <LuCheck className="size-5" />
-                Approve Appointment
+
+                {isRejected
+                  ? "Approve Rejected Appointment"
+                  : "Approve Appointment"}
               </button>
             )}
 
-            {isApproved && (
-              <button
-                type="button"
-                disabled={isSubmitting}
-                onClick={() =>
-                  void onSubmit("completed")
-                }
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 text-sm font-black text-white transition hover:bg-emerald-700 disabled:opacity-50"
-              >
-                <LuCircleCheck className="size-5" />
-                Complete Consultation
-              </button>
-            )}
-
-
-            {(isPending || isApproved) && (
+            {(isPending ||
+              isApproved ||
+              isRejected) && (
               <button
                 type="button"
                 disabled={isSubmitting}
@@ -211,7 +229,7 @@ const AppointmentActionModal = ({
                 onClick={() =>
                   setShowRejectForm(true)
                 }
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-5 text-sm font-black text-red-700 transition hover:bg-red-100 disabled:opacity-50 dark:border-red-900/60 dark:bg-red-950/25 dark:text-red-400"
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-5 text-sm font-black text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-900/60 dark:bg-red-950/25 dark:text-red-400"
               >
                 <LuX className="size-5" />
                 Reject Appointment

@@ -1,14 +1,10 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import {
-  LuCalendarDays,
-  LuLoaderCircle,
-} from "react-icons/lu";
+import "react-toastify/dist/ReactToastify.css";
+
+import { useCallback, useEffect, useState } from "react";
+import { LuCalendarDays, LuLoaderCircle } from "react-icons/lu";
+import { toast, ToastContainer } from "react-toastify";
 
 import AppointmentActionModal from "./AppointmentActionModal";
 import AppointmentDetailsModal from "./AppointmentDetailsModal";
@@ -16,6 +12,7 @@ import AppointmentFilters from "./AppointmentFilters";
 import AppointmentPagination from "./AppointmentPagination";
 import AppointmentTable from "./AppointmentTable";
 import DoctorRescheduleModal from "./DoctorRescheduleModal";
+
 import {
   fetchDoctorAppointmentDetails,
   fetchDoctorAppointments,
@@ -29,6 +26,7 @@ import type {
   Pagination,
   UserStatus,
 } from "./types";
+import CompleteConsultationModal from "./CompleteConsultationModal";
 
 interface DoctorAppointmentsProps {
   doctorName?: string | null;
@@ -42,167 +40,134 @@ const emptyPagination: Pagination = {
   totalPages: 1,
 };
 
+const getErrorMessage = (error: unknown, fallback: string): string => {
+  return error instanceof Error && error.message.trim()
+    ? error.message
+    : fallback;
+};
+
 const DoctorAppointments = ({
   doctorName,
   userStatus,
 }: DoctorAppointmentsProps) => {
-  const [appointments, setAppointments] =
-    useState<DoctorAppointment[]>([]);
+  const [appointments, setAppointments] = useState<DoctorAppointment[]>([]);
 
-  const [pagination, setPagination] =
-    useState<Pagination>(emptyPagination);
+  const [pagination, setPagination] = useState<Pagination>(emptyPagination);
 
   const [page, setPage] = useState(1);
+
   const [search, setSearch] = useState("");
-  const [submittedSearch, setSubmittedSearch] =
-    useState("");
-  const [status, setStatus] =
-    useState<AppointmentStatus | "">("");
 
-  const [isLoading, setIsLoading] =
-    useState(true);
+  const [submittedSearch, setSubmittedSearch] = useState("");
 
-  const [feedback, setFeedback] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
+  const [status, setStatus] = useState<AppointmentStatus | "">("");
 
-  const [viewOpen, setViewOpen] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [viewOpen, setViewOpen] = useState(false);
+
   const [viewAppointment, setViewAppointment] =
     useState<DoctorAppointment | null>(null);
-  const [isViewing, setIsViewing] =
-    useState(false);
-  const [viewError, setViewError] =
-    useState("");
 
-  const [actionOpen, setActionOpen] =
-    useState(false);
+  const [isViewing, setIsViewing] = useState(false);
+
+  const [viewError, setViewError] = useState("");
+
+  const [actionOpen, setActionOpen] = useState(false);
+
   const [actionAppointment, setActionAppointment] =
     useState<DoctorAppointment | null>(null);
-  const [isSubmitting, setIsSubmitting] =
-    useState(false);
 
-  const [rescheduleOpen, setRescheduleOpen] =
-    useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [
-    rescheduleAppointment,
-    setRescheduleAppointment,
-  ] = useState<DoctorAppointment | null>(
-    null,
-  );
+  const [rescheduleOpen, setRescheduleOpen] = useState(false);
 
-  const [
-    isRescheduling,
-    setIsRescheduling,
-  ] = useState(false);
+  const [rescheduleAppointment, setRescheduleAppointment] =
+    useState<DoctorAppointment | null>(null);
 
-  const readOnly =
-    userStatus === "blocked";
+  const [isRescheduling, setIsRescheduling] = useState(false);
 
-  const loadAppointments =
-    useCallback(async () => {
-      setIsLoading(true);
+  const [completeOpen, setCompleteOpen] = useState(false);
 
-      try {
-        const response =
-          await fetchDoctorAppointments(
-            page,
-            status,
-            submittedSearch,
-          );
+  const [completeAppointment, setCompleteAppointment] =
+    useState<DoctorAppointment | null>(null);
 
-        setAppointments(
-          response.appointments,
-        );
-        setPagination(
-          response.pagination,
-        );
-      } catch (error: unknown) {
-        setFeedback({
-          type: "error",
-          message:
-            error instanceof Error
-              ? error.message
-              : "Appointments could not be loaded.",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }, [page, status, submittedSearch]);
+  const [isCompleting, setIsCompleting] = useState(false);
+
+  const readOnly = userStatus === "blocked";
+
+  const loadAppointments = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetchDoctorAppointments(
+        page,
+        status,
+        submittedSearch,
+      );
+
+      setAppointments(response.appointments);
+
+      setPagination(response.pagination);
+    } catch (error: unknown) {
+      toast.error(getErrorMessage(error, "Appointments could not be loaded."));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page, status, submittedSearch]);
 
   useEffect(() => {
     void loadAppointments();
   }, [loadAppointments]);
 
-  const openView = async (
-    appointment: DoctorAppointment,
-  ) => {
+  const openView = async (appointment: DoctorAppointment): Promise<void> => {
     setViewOpen(true);
     setViewAppointment(appointment);
     setViewError("");
     setIsViewing(true);
 
     try {
-      const response =
-        await fetchDoctorAppointmentDetails(
-          appointment.id,
-        );
+      const response = await fetchDoctorAppointmentDetails(appointment.id);
 
-      setViewAppointment(
-        response.appointment,
-      );
+      setViewAppointment(response.appointment);
     } catch (error: unknown) {
-      setViewError(
-        error instanceof Error
-          ? error.message
-          : "Appointment details could not be loaded.",
+      const message = getErrorMessage(
+        error,
+        "Appointment details could not be loaded.",
       );
+
+      setViewError(message);
+      toast.error(message);
     } finally {
       setIsViewing(false);
     }
   };
 
   const submitStatus = async (
-    nextStatus: Exclude<
-      AppointmentStatus,
-      "pending"
-    >,
+    nextStatus: Exclude<AppointmentStatus, "pending">,
     rejectionReason = "",
-  ) => {
+  ): Promise<void> => {
     if (!actionAppointment || readOnly) {
       return;
     }
 
     setIsSubmitting(true);
-    setFeedback(null);
 
     try {
-      const response =
-        await updateDoctorAppointmentStatus(
-          actionAppointment.id,
-          nextStatus,
-          rejectionReason,
-        );
+      const response = await updateDoctorAppointmentStatus(
+        actionAppointment.id,
+        nextStatus,
+        rejectionReason,
+      );
 
-      setFeedback({
-        type: "success",
-        message: response.message,
-      });
+      toast.success(response.message);
 
       setActionOpen(false);
       setActionAppointment(null);
 
       await loadAppointments();
     } catch (error: unknown) {
-      setFeedback({
-        type: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Appointment could not be updated.",
-      });
+      toast.error(getErrorMessage(error, "Appointment could not be updated."));
     } finally {
       setIsSubmitting(false);
     }
@@ -212,45 +177,61 @@ const DoctorAppointments = ({
     appointmentDate: string,
     appointmentTime: string,
     rescheduleReason: string,
-  ) => {
-    if (
-      !rescheduleAppointment ||
-      readOnly
-    ) {
+  ): Promise<void> => {
+    if (!rescheduleAppointment || readOnly) {
       return;
     }
 
     setIsRescheduling(true);
-    setFeedback(null);
 
     try {
-      const response =
-        await rescheduleDoctorAppointment(
-          rescheduleAppointment.id,
-          appointmentDate,
-          appointmentTime,
-          rescheduleReason,
-        );
+      const response = await rescheduleDoctorAppointment(
+        rescheduleAppointment.id,
+        appointmentDate,
+        appointmentTime,
+        rescheduleReason,
+      );
 
-      setFeedback({
-        type: "success",
-        message: response.message,
-      });
+      toast.success(response.message);
 
       setRescheduleOpen(false);
       setRescheduleAppointment(null);
 
       await loadAppointments();
     } catch (error: unknown) {
-      setFeedback({
-        type: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Appointment could not be rescheduled.",
-      });
+      toast.error(
+        getErrorMessage(error, "Appointment could not be rescheduled."),
+      );
     } finally {
       setIsRescheduling(false);
+    }
+  };
+
+  const submitComplete = async (): Promise<void> => {
+    if (!completeAppointment || readOnly) {
+      return;
+    }
+
+    setIsCompleting(true);
+
+    try {
+      const response = await updateDoctorAppointmentStatus(
+        completeAppointment.id,
+        "completed",
+      );
+
+      toast.success(response.message);
+
+      setCompleteOpen(false);
+      setCompleteAppointment(null);
+
+      await loadAppointments();
+    } catch (error: unknown) {
+      toast.error(
+        getErrorMessage(error, "Consultation could not be completed."),
+      );
+    } finally {
+      setIsCompleting(false);
     }
   };
 
@@ -267,28 +248,16 @@ const DoctorAppointments = ({
 
         <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-[#A997AE]">
           {doctorName
-            ? `${doctorName}, review new patient requests, approve or reject appointments, and complete consultations.`
-            : "Review new patient requests, approve or reject appointments, and complete consultations."}
+            ? `${doctorName}, review new patient requests, approve or reject appointments, reschedule visits, and complete consultations.`
+            : "Review new patient requests, approve or reject appointments, reschedule visits, and complete consultations."}
         </p>
       </header>
 
       {readOnly && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/25 dark:text-amber-300">
-          Your account is blocked. You can search,
-          filter and view appointment data, but
-          appointment actions are disabled.
-        </div>
-      )}
-
-      {feedback && (
-        <div
-          className={`rounded-2xl border px-4 py-3 text-sm font-bold ${
-            feedback.type === "success"
-              ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-400"
-              : "border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/25 dark:text-red-400"
-          }`}
-        >
-          {feedback.message}
+          Your account is blocked. You can search, filter, paginate and view
+          patient appointment information, but every appointment action is
+          disabled.
         </div>
       )}
 
@@ -305,9 +274,7 @@ const DoctorAppointments = ({
           setPage(1);
           setStatus(value);
         }}
-        onRefresh={() =>
-          void loadAppointments()
-        }
+        onRefresh={() => void loadAppointments()}
       />
 
       {isLoading ? (
@@ -323,8 +290,7 @@ const DoctorAppointments = ({
           </h2>
 
           <p className="mt-2 text-sm text-slate-500 dark:text-[#A997AE]">
-            New appointment requests will appear
-            here automatically.
+            New appointment requests will appear here automatically.
           </p>
         </div>
       ) : (
@@ -337,7 +303,13 @@ const DoctorAppointments = ({
             }}
             onManage={(appointment) => {
               setActionAppointment(appointment);
+
               setActionOpen(true);
+            }}
+            onComplete={(appointment) => {
+              setCompleteAppointment(appointment);
+
+              setCompleteOpen(true);
             }}
           />
 
@@ -373,9 +345,9 @@ const DoctorAppointments = ({
         onOpenReschedule={(appointment) => {
           setActionOpen(false);
           setActionAppointment(null);
-          setRescheduleAppointment(
-            appointment,
-          );
+
+          setRescheduleAppointment(appointment);
+
           setRescheduleOpen(true);
         }}
         onSubmit={submitStatus}
@@ -392,6 +364,31 @@ const DoctorAppointments = ({
           }
         }}
         onSubmit={submitReschedule}
+      />
+
+      <CompleteConsultationModal
+        isOpen={completeOpen}
+        appointment={completeAppointment}
+        isSubmitting={isCompleting}
+        onClose={() => {
+          if (!isCompleting) {
+            setCompleteOpen(false);
+            setCompleteAppointment(null);
+          }
+        }}
+        onConfirm={submitComplete}
+      />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+        draggable={false}
+        theme="colored"
       />
     </main>
   );
