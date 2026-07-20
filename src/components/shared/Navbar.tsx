@@ -255,7 +255,7 @@ const Navbar: React.FC = () => {
         <Link href="/" className="group flex shrink-0 items-center gap-2.5">
           <div className="relative">
             <Image
-              src="/assets/logo11.png"
+              src="/assets/final1.png"
               alt="SebaSathi AI logo"
               width={42}
               height={42}
