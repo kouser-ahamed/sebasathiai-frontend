@@ -9,7 +9,7 @@ const DashboardEntryPage = async () => {
   const user = await getUserSession();
 
   if (!user?.id) {
-    redirect("/auth/signin");
+    redirect("/auth/login");
   }
 
   redirect(`/dashboard/${user.role}`);
