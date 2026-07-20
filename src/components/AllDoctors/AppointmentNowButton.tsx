@@ -33,7 +33,7 @@ const AppointmentNowButton = ({
   const handleAppointment = async () => {
     if (!currentUser?.id) {
       router.push(
-        `/auth/signin?callbackUrl=${encodeURIComponent(`/find-doctors/${doctorId}/appointment`)}`,
+        `/auth/login?callbackURL=${encodeURIComponent(`/find-doctors/${doctorId}/appointment`)}`,
       );
       return;
     }

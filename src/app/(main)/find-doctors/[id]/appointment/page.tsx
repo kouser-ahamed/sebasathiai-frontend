@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 
 import { getUserSession } from "@/lib/core/session";
@@ -22,17 +22,21 @@ const AppointmentPage = async ({ params }: AppointmentPageProps) => {
 
   if (!doctorResult?.doctor) notFound();
 
-  const currentUser: CurrentUser | null = session
-    ? {
-        id: session.id,
-        _id: session._id,
-        name: session.name,
-        email: session.email,
-        image: session.image,
-        role: session.role,
-        status: session.status,
-      }
-    : null;
+  if (!session?.id) {
+    const callbackURL = `/find-doctors/${id}/appointment`;
+
+    redirect(`/auth/login?callbackURL=${encodeURIComponent(callbackURL)}`);
+  }
+
+  const currentUser: CurrentUser = {
+    id: session.id,
+    _id: session._id,
+    name: session.name,
+    email: session.email,
+    image: session.image,
+    role: session.role,
+    status: session.status,
+  };
 
   return <AppointmentForm doctor={doctorResult.doctor} currentUser={currentUser} />;
 };
