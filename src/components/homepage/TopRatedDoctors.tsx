@@ -42,6 +42,7 @@ const TopRatedDoctors = () => {
 
   return (
     <section
+      id="next-section"
       className="
       relative
       overflow-hidden

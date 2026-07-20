@@ -700,88 +700,38 @@ const FeaturesSection = () => {
 
 
           <Link
-
             href="/ai-health-assistant"
-
-
             className="
             group
-
             flex
-
             h-12
-
             items-center
-
             gap-2
-
             rounded-xl
-
-            bg-white/90
-
+            bg-[#745D83]
             px-6
-
             text-sm
-
             font-black
-
-            text-[#745D83]
-
+            text-white
             shadow-lg
-
             backdrop-blur-md
-
             transition-all
-
             duration-300
-
             hover:-translate-y-1
-
-            hover:bg-gradient-to-r
-
-            hover:from-[#F5CBCB]
-
-            hover:to-[#EBD9F2]
-
-            hover:text-[#5D4A6D]
-
+            hover:bg-[#614E70]
             hover:shadow-2xl
-
-            dark:bg-[#211B27]/80
-
-            dark:text-[#F5CBCB]
-
-            dark:border
-
-            dark:border-[#41354A]
-
-            dark:hover:from-[#41354A]
-
-            dark:hover:to-[#5D4A6D]
-
-            dark:hover:text-white
-
-            dark:hover:border-[#C5B3D3]
+            dark:bg-[#745D83]
+            dark:text-white
             "
           >
-
-
             Try AI Assistant
-
-
             <LuChevronRight
-
               className="
               transition-transform
-
               duration-300
-
               group-hover:translate-x-1
               "
-
             />
-
-
           </Link>
 
 

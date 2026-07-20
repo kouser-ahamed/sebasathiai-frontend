@@ -392,11 +392,7 @@ gap-2
 rounded-xl
 
 
-bg-gradient-to-r
-
-from-[#745D83]
-
-to-[#9B7BB0]
+bg-[#745D83]
 
 
 px-7
@@ -454,12 +450,7 @@ gap-2
 rounded-xl
 
 
-border
-
-border-[#745D83]/40
-
-
-bg-white/80
+bg-[#745D83]
 
 
 px-7
@@ -470,17 +461,19 @@ text-sm
 font-black
 
 
-text-[#745D83]
+text-white
 
 
 backdrop-blur-md
 
 
+shadow-lg
 
-dark:bg-[#211B27]
+transition
 
+hover:-translate-y-1
 
-dark:text-[#F5CBCB]
+hover:bg-[#614E70]
 
 "
             >
@@ -602,7 +595,9 @@ justify-center
 rounded-full
 
 
-bg-white
+bg-[#745D83]
+
+text-white
 
 
 shadow
@@ -610,10 +605,7 @@ shadow
 
 transition
 
-
-hover:bg-[#745D83]
-
-hover:text-white
+hover:bg-[#614E70]
 
 "
         >
@@ -643,13 +635,15 @@ text-white
 
 shadow
 
+transition
+
+hover:bg-[#614E70]
+
 "
         >
           <FiArrowRight />
         </button>
       </div>
-
-      {/* Indicators */}
 
       <div
         className="
@@ -682,7 +676,7 @@ rounded-full
 transition-all
 
 
-${activeSlide === index ? "w-10 bg-[#745D83]" : "w-3 bg-white/80"}
+${activeSlide === index ? "w-10 bg-[#745D83]" : "w-3 bg-[#745D83]/30 dark:bg-[#C5B3D3]/40"}
 
 `}
           />
@@ -764,8 +758,12 @@ border
 
 border-[#745D83]
 
+bg-white/85
+
 
 dark:border-[#F5CBCB]
+
+dark:bg-[#211B27]/85
 
 "
         >
