@@ -185,6 +185,32 @@ const dashboardItems: Record<
   ],
 };
 
+const getActiveDashboardHref = (
+  pathname: string,
+  navItems: DashboardNavItem[],
+): string | null => {
+  const matchingItems = navItems.filter((item) => {
+    if (item.href === "/") {
+      return pathname === "/";
+    }
+
+    return (
+      pathname === item.href ||
+      pathname.startsWith(`${item.href}/`)
+    );
+  });
+
+  if (matchingItems.length === 0) {
+    return null;
+  }
+
+  return matchingItems.sort(
+    (firstItem, secondItem) =>
+      secondItem.href.length -
+      firstItem.href.length,
+  )[0].href;
+};
+
 const DashboardSideBar = ({
   user,
 }: DashboardSideBarProps) => {
@@ -208,18 +234,10 @@ const DashboardSideBar = ({
     setIsOpen(false);
   };
 
-  const isActiveLink = (
-    href: string,
-  ): boolean => {
-    if (href === "/") {
-      return pathname === "/";
-    }
-
-    return (
-      pathname === href ||
-      pathname.startsWith(`${href}/`)
-    );
-  };
+  const activeHref = getActiveDashboardHref(
+    pathname,
+    navItems,
+  );
 
   const handleLogout =
     async (): Promise<void> => {
@@ -336,9 +354,8 @@ const DashboardSideBar = ({
       {/* Dashboard navigation */}
       <div className="flex flex-1 flex-col gap-1.5">
         {navItems.map((item) => {
-          const active = isActiveLink(
-            item.href,
-          );
+          const active =
+            item.href === activeHref;
 
           const Icon = item.icon;
 

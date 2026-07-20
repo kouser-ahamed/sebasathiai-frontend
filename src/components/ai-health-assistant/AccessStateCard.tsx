@@ -38,7 +38,7 @@ const AccessStateCard = ({ state, message }: AccessStateCardProps) => {
 
       {state === "guest" && (
         <Link
-          href="/login"
+          href="/auth/login"
           className="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-[#745D83] px-6 text-sm font-black text-white transition hover:bg-[#614E70] dark:bg-[#C5B3D3] dark:text-[#211B27]"
         >
           Sign in
