@@ -1,11 +1,15 @@
-import React from 'react';
+import AboutSection from "@/components/shared/AboutSection";
 
-const AboutPage = () => {
-    return (
-        <div>
-            About Page
-        </div>
-    );
+
+const AboutPage =()=>{
+
+return (
+
+<AboutSection />
+
+);
+
 };
+
 
 export default AboutPage;

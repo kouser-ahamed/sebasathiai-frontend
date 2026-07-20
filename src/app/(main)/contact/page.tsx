@@ -1,11 +1,15 @@
-import React from 'react';
+import ContactSection from "@/components/shared/ContactSection";
 
-const Contact = () => {
-    return (
-        <div>
-            Contact Page
-        </div>
-    );
+
+const ContactPage =()=>{
+
+return (
+
+<ContactSection />
+
+);
+
 };
 
-export default Contact;
+
+export default ContactPage;
