@@ -368,37 +368,19 @@ dark:text-[#CDBFD0]
           </p>
         </div>
 
-        <div
-          className="
+       <div
+  className="
 mt-10
 flex
 justify-between
 "
-        >
-          <button
-            onClick={() => swiper?.slidePrev()}
-            className="
+>
+
+<button
+  onClick={() => swiper?.slidePrev()}
+  className="
 size-11
-rounded-full
 
-bg-white
-
-shadow
-
-text-[#745D83]
-
-hover:bg-[#745D83]
-
-hover:text-white
-"
-          >
-            <FiArrowLeft />
-          </button>
-
-          <button
-            onClick={() => swiper?.slideNext()}
-            className="
-size-11
 rounded-full
 
 bg-[#745D83]
@@ -406,11 +388,43 @@ bg-[#745D83]
 text-white
 
 shadow
+
+flex
+
+items-center
+
+justify-center
 "
-          >
-            <FiArrowRight />
-          </button>
-        </div>
+>
+  <FiArrowLeft />
+</button>
+
+
+
+<button
+  onClick={() => swiper?.slideNext()}
+  className="
+size-11
+
+rounded-full
+
+bg-[#745D83]
+
+text-white
+
+shadow
+
+flex
+
+items-center
+
+justify-center
+"
+>
+  <FiArrowRight />
+</button>
+
+</div>
 
         <Swiper
           modules={[Autoplay, Keyboard, Pagination]}
