@@ -280,7 +280,7 @@ const DashboardSideBar = ({
       >
         <div className="relative shrink-0">
           <Image
-            src="/assets/logo11.png"
+            src="/assets/final1.png"
             alt="SebaSathi AI logo"
             width={44}
             height={44}
