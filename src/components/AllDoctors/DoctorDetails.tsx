@@ -163,7 +163,7 @@ const DoctorDetails = ({
     <main className="min-h-screen bg-[#FFF9F9] py-10 dark:bg-[#211B27]">
       <div className="mx-auto w-full max-w-6xl space-y-7 px-4 sm:px-6 lg:px-8">
         <Link
-          href="/doctors"
+          href="/find-doctors"
           className="inline-flex items-center gap-2 text-sm font-black text-[#745D83] hover:text-[#614E70] dark:text-[#F5CBCB]"
         >
           <LuArrowLeft className="size-4" />
