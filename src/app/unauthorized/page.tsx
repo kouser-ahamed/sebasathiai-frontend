@@ -347,7 +347,7 @@ const UnauthorizedPage = () => {
                 <Button
                   type="button"
                   size="lg"
-                  variant="bordered"
+                  variant="outline"
                   onPress={() => router.back()}
                   className="
                     h-12
@@ -378,7 +378,7 @@ const UnauthorizedPage = () => {
 
               <Button
                 type="button"
-                variant="light"
+                variant="ghost"
                 onPress={() => router.push("/auth/login")}
                 className="
                   mt-4
